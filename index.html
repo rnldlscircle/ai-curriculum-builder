@@ -3,140 +3,234 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI 교육 커리큘럼 빌더</title>
+  <title>AI 교육 커리큘럼 빌더 · D1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * { box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
-
-    .cell-edit {
-      min-height: 38px; padding: 6px 8px; width: 100%; outline: none;
-      border: 2px solid transparent; border-radius: 5px;
-      white-space: pre-wrap; word-break: break-word;
-      line-height: 1.55; font-size: 12.5px;
-      transition: border-color .12s, background .12s;
-    }
-    .cell-edit:hover { border-color: #d1d5db; }
-    .cell-edit:focus { border-color: #3b82f6; background: #eff6ff; }
-
-    .sel-input, .txt-input {
-      width: 100%; border: 2px solid transparent; border-radius: 5px;
-      padding: 6px 8px; font-size: 12.5px; background: transparent; outline: none;
-      transition: border-color .12s, background .12s;
-    }
-    .sel-input { cursor: pointer; -webkit-appearance: auto; }
-    .txt-input { text-align: center; }
-    .sel-input:hover, .txt-input:hover { border-color: #d1d5db; }
-    .sel-input:focus, .txt-input:focus { border-color: #3b82f6; background: #eff6ff; }
-
-    /* Form fields in modal */
-    .f-input {
-      width: 100%; border: 1.5px solid #e5e7eb; border-radius: 8px;
-      padding: 9px 12px; font-size: 13px; outline: none; background: #fff;
-      transition: border-color .15s, box-shadow .15s;
-      font-family: inherit;
-    }
-    .f-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
-    .f-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; display: block; }
-    .f-hint  { font-size: 11px; color: #9ca3af; margin-top: 3px; }
-
-    thead th { position: sticky; top: 0; z-index: 10; }
-    tr:nth-child(even) td { background: #f9fafb; }
-    tr:hover td { background: #eff6ff !important; transition: background .1s; }
-    tr.selected td { background: #fef9c3 !important; }
-
-    .spinner {
-      width: 36px; height: 36px; border: 3px solid #dbeafe;
-      border-top-color: #3b82f6; border-radius: 50%;
-      animation: spin .75s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
-    .modal.hidden { display: none; }
-    .modal-box { background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.18); width: 100%; animation: popIn .2s ease; }
-    @keyframes popIn { from { opacity:0; transform:scale(.96) translateY(8px); } to { opacity:1; transform:none; } }
-
-    .toast {
-      position: fixed; bottom: 20px; right: 20px; padding: 10px 16px;
-      border-radius: 8px; color: #fff; font-size: 13px; font-weight: 500;
-      z-index: 200; animation: fadeIn .2s ease; box-shadow: 0 4px 12px rgba(0,0,0,.15);
-    }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
-    .badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; }
-    .tag-blue { background:#dbeafe; color:#1d4ed8; }
-    .tag-green { background:#dcfce7; color:#15803d; }
-    .tag-purple { background:#ede9fe; color:#7c3aed; }
-    .tag-orange { background:#fed7aa; color:#c2410c; }
-
-    /* Info summary bar above table */
-    #info-bar { transition: all .2s; }
-    #info-bar.has-data { opacity:1; }
+    *{box-sizing:border-box;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+    .f-input{width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:13px;outline:none;background:#fff;transition:border-color .15s,box-shadow .15s;font-family:inherit;}
+    .f-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.12);}
+    .f-label{font-size:12px;font-weight:600;color:#374151;margin-bottom:5px;display:block;}
+    .cell-edit{min-height:38px;padding:6px 8px;width:100%;outline:none;border:2px solid transparent;border-radius:5px;white-space:pre-wrap;word-break:break-word;line-height:1.55;font-size:12.5px;transition:border-color .12s,background .12s;}
+    .cell-edit:hover{border-color:#d1d5db;}
+    .cell-edit:focus{border-color:#3b82f6;background:#eff6ff;}
+    .sel-input,.txt-input{width:100%;border:2px solid transparent;border-radius:5px;padding:6px 8px;font-size:12.5px;background:transparent;outline:none;transition:border-color .12s,background .12s;}
+    .sel-input{cursor:pointer;-webkit-appearance:auto;}
+    .txt-input{text-align:center;}
+    .sel-input:hover,.txt-input:hover{border-color:#d1d5db;}
+    .sel-input:focus,.txt-input:focus{border-color:#3b82f6;background:#eff6ff;}
+    thead th{position:sticky;top:0;z-index:10;}
+    tr:nth-child(even) td{background:#f9fafb;}
+    tr:hover td{background:#eff6ff !important;transition:background .1s;}
+    tr.selected td{background:#fef9c3 !important;}
+    .nav-tab{padding:6px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:background .12s,color .12s;color:#6b7280;border:none;background:none;}
+    .nav-tab.active{background:#eff6ff;color:#2563eb;font-weight:600;}
+    .nav-tab:hover:not(.active){background:#f3f4f6;color:#374151;}
+    .spinner{width:36px;height:36px;border:3px solid #dbeafe;border-top-color:#3b82f6;border-radius:50%;animation:spin .75s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;}
+    .modal.hidden{display:none;}
+    .modal-box{background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);width:100%;animation:popIn .2s ease;}
+    @keyframes popIn{from{opacity:0;transform:scale(.96) translateY(8px);}to{opacity:1;transform:none;}}
+    .toast{position:fixed;bottom:20px;right:20px;padding:10px 16px;border-radius:8px;color:#fff;font-size:13px;font-weight:500;z-index:200;animation:fadeIn .2s ease;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+    .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;}
+    .tag-blue{background:#dbeafe;color:#1d4ed8;}
+    .tag-green{background:#dcfce7;color:#15803d;}
+    .tag-purple{background:#ede9fe;color:#7c3aed;}
+    .tag-orange{background:#fed7aa;color:#c2410c;}
+    .tag-gray{background:#f3f4f6;color:#4b5563;}
+    .tag-red{background:#fee2e2;color:#b91c1c;}
+    .filter-btn{padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .1s;display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;border:none;background:none;color:#374151;}
+    .filter-btn:hover{background:#f3f4f6;}
+    .filter-btn.active{background:#eff6ff;color:#2563eb;font-weight:600;}
+    .curr-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative;}
+    .curr-card:hover{border-color:#93c5fd;box-shadow:0 4px 14px rgba(59,130,246,.1);}
+    .check-label{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:12.5px;color:#374151;transition:background .1s;user-select:none;}
+    .check-label:hover{background:#f9fafb;}
+    .check-label input{width:14px;height:14px;cursor:pointer;accent-color:#2563eb;}
+    ::-webkit-scrollbar{width:6px;height:6px;}
+    ::-webkit-scrollbar-track{background:#f1f5f9;}
+    ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px;}
   </style>
 </head>
 <body class="bg-slate-100 min-h-screen">
 
-  <!-- ── Top Bar ── -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
-    <div class="px-5 h-[52px] flex items-center gap-3 max-w-[1600px] mx-auto">
-      <div class="flex items-center gap-2 shrink-0">
-        <div class="w-7 h-7 bg-blue-600 rounded-md flex items-center justify-center">
-          <span class="text-white text-[10px] font-black">D1</span>
+<!-- ══ HEADER ══ -->
+<header class="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+  <div class="px-5 h-[52px] flex items-center gap-3 max-w-[1600px] mx-auto">
+    <div class="flex items-center gap-2 shrink-0">
+      <div class="w-7 h-7 bg-blue-600 rounded-md flex items-center justify-center">
+        <span class="text-white text-[10px] font-black">D1</span>
+      </div>
+      <span class="font-semibold text-gray-800 text-[13.5px] hidden sm:block">AI 커리큘럼 빌더</span>
+    </div>
+    <div class="w-px h-5 bg-gray-200 shrink-0"></div>
+    <nav class="flex items-center gap-1">
+      <button class="nav-tab active" id="tab-form" onclick="showView('form')">✨ 새 커리큘럼</button>
+      <button class="nav-tab" id="tab-archive" onclick="showView('archive')">
+        📁 보관함
+        <span id="arc-badge" class="ml-1.5 bg-blue-100 text-blue-700 text-[10px] px-1.5 py-0.5 rounded-full hidden"></span>
+      </button>
+    </nav>
+    <div class="ml-auto flex items-center gap-1.5">
+      <div id="ed-actions" class="hidden flex items-center gap-1.5">
+        <button onclick="addRow()" class="border border-gray-200 hover:bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-md text-[12.5px]">+ 행 추가</button>
+        <button onclick="deleteSelected()" class="border border-gray-200 hover:bg-red-50 hover:text-red-500 text-gray-500 px-2.5 py-1.5 rounded-md text-[12.5px]">− 삭제</button>
+        <button onclick="exportCSV()" class="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-md text-[12.5px] font-medium shadow-sm">↓ 엑셀</button>
+        <button onclick="saveCurr()" class="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-[12.5px] font-medium shadow-sm">💾 저장</button>
+      </div>
+      <button onclick="openApiModal()" title="API 키 설정" class="border border-gray-200 hover:bg-gray-50 text-gray-400 w-7 h-7 rounded-md flex items-center justify-center text-sm">⚙</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ VIEW: FORM ══ -->
+<div id="v-form" class="px-5 py-8 max-w-[780px] mx-auto">
+  <div class="mb-5">
+    <h1 class="text-[22px] font-bold text-gray-800">새 교육 커리큘럼 만들기</h1>
+    <p class="text-[13px] text-gray-400 mt-1">아래 정보를 입력하면 AI가 제안서 데이터를 기반으로 맞춤 커리큘럼을 설계합니다</p>
+  </div>
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 space-y-5">
+
+    <!-- 1. 고객사명 + 강의시간 -->
+    <div class="grid grid-cols-3 gap-4">
+      <div class="col-span-2">
+        <label class="f-label">🏢 고객사명 <span class="text-red-400">*</span></label>
+        <input id="f-org" type="text" placeholder="예: 국민건강보험공단" class="f-input">
+      </div>
+      <div>
+        <label class="f-label">⏱ 총 강의시간</label>
+        <div class="flex items-center gap-1.5">
+          <input id="f-hours" type="number" value="7" min="1" max="80" class="f-input text-center">
+          <span class="text-[12px] text-gray-400 shrink-0">H</span>
         </div>
-        <span class="font-semibold text-gray-800 text-[13.5px] hidden sm:block">AI 커리큘럼 빌더</span>
-      </div>
-      <div class="w-px h-5 bg-gray-200 shrink-0"></div>
-
-      <!-- Summary chips (filled after generation) -->
-      <div id="info-bar" class="flex items-center gap-2 flex-1 overflow-x-auto text-[12px]">
-        <span id="chip-org"   class="badge tag-blue hidden"></span>
-        <span id="chip-name"  class="text-gray-600 font-medium hidden" id="chip-name"></span>
-        <span id="chip-level" class="badge tag-purple hidden"></span>
-        <span id="chip-hours" class="badge tag-green hidden"></span>
-        <span id="chip-method" class="badge tag-orange hidden"></span>
-        <span class="text-gray-300 text-xs hidden" id="chip-placeholder">← AI 생성 버튼을 눌러 커리큘럼을 만들어보세요</span>
-      </div>
-
-      <!-- Actions -->
-      <div class="flex items-center gap-1.5 shrink-0">
-        <button onclick="openGenModal()" id="gen-btn"
-          class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-colors shadow-sm">
-          ✨ AI 생성
-        </button>
-        <button onclick="addRow()"
-          class="border border-gray-200 hover:bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-md text-[12.5px] transition-colors">
-          + 행 추가
-        </button>
-        <button onclick="deleteSelected()"
-          class="border border-gray-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 text-gray-500 px-2.5 py-1.5 rounded-md text-[12.5px] transition-colors">
-          − 행 삭제
-        </button>
-        <div class="w-px h-4 bg-gray-200"></div>
-        <button onclick="exportCSV()"
-          class="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-md text-[12.5px] font-medium transition-colors shadow-sm">
-          ↓ 엑셀
-        </button>
-        <button onclick="openApiModal()" title="API 키 설정"
-          class="border border-gray-200 hover:bg-gray-50 text-gray-400 w-7 h-7 rounded-md flex items-center justify-center text-sm transition-colors">⚙</button>
       </div>
     </div>
-  </header>
 
-  <!-- ── Main Table ── -->
-  <main class="px-5 py-3 max-w-[1600px] mx-auto">
+    <!-- 2. 교육목적 -->
+    <div>
+      <label class="f-label">🎯 교육목적 <span class="text-gray-400 font-normal">(이 교육으로 달성하려는 것)</span></label>
+      <textarea id="f-purpose" rows="2" placeholder="예: 전 직원 생성형 AI 활용역량 강화 / 반복 행정업무를 AI로 자동화하여 업무효율 향상" class="f-input resize-none"></textarea>
+    </div>
+
+    <!-- 3. 교육대상 -->
+    <div>
+      <label class="f-label">👤 교육대상 <span class="text-gray-400 font-normal">(직군·인원·IT 친숙도 등)</span></label>
+      <textarea id="f-target" rows="2" placeholder="예: 행정직 직원 200명, IT 비전문가, 평균 연령 40대 / 공무원 50명, 엑셀 기본 활용 가능" class="f-input resize-none"></textarea>
+    </div>
+
+    <!-- 4+5. 교육방법 + 난이도 -->
+    <div class="grid grid-cols-2 gap-5">
+      <div>
+        <label class="f-label">🎓 교육방법</label>
+        <div class="flex gap-2 mt-1">
+          <label class="flex-1"><input type="radio" name="f-method" value="대면(오프라인)" checked class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">🏫 대면</div></label>
+          <label class="flex-1"><input type="radio" name="f-method" value="비대면(온라인)" class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">💻 비대면</div></label>
+          <label class="flex-1"><input type="radio" name="f-method" value="온·오프라인 병행" class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">🔄 병행</div></label>
+        </div>
+      </div>
+      <div>
+        <label class="f-label">📊 교육생 난이도</label>
+        <div class="flex gap-2 mt-1">
+          <label class="flex-1"><input type="radio" name="f-level" value="입문" class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">입문</div></label>
+          <label class="flex-1"><input type="radio" name="f-level" value="초급" checked class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">초급</div></label>
+          <label class="flex-1"><input type="radio" name="f-level" value="중급" class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">중급</div></label>
+          <label class="flex-1"><input type="radio" name="f-level" value="심화" class="sr-only peer">
+            <div class="border-2 border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 rounded-lg px-2 py-2.5 text-center text-[12px] font-medium cursor-pointer transition-all">심화</div></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 기타사항 (checkboxes) -->
+    <div>
+      <label class="f-label">📝 기타사항 <span class="text-gray-400 font-normal">(해당 항목 모두 체크 — AI가 반드시 반영합니다)</span></label>
+      <div class="border border-gray-200 rounded-xl p-3">
+        <div id="extra-checks" class="grid grid-cols-2 gap-0.5"></div>
+      </div>
+      <textarea id="f-extra-custom" rows="2" placeholder="추가로 전달할 내용을 자유롭게 입력하세요..." class="f-input resize-none mt-2"></textarea>
+    </div>
+
+    <!-- Generate -->
+    <div class="pt-1">
+      <button onclick="handleGenerate()"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-semibold text-[15px] transition-colors flex items-center justify-center gap-2 shadow-sm">
+        ✨ AI 커리큘럼 생성하기
+      </button>
+      <p class="text-center text-[11.5px] text-gray-400 mt-2">실제 제안서 데이터 기반 · Claude AI · 직접 수정 가능 · 자동 저장</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ VIEW: ARCHIVE ══ -->
+<div id="v-archive" class="hidden px-5 py-5 max-w-[1400px] mx-auto">
+  <div class="flex gap-5">
+    <!-- Sidebar -->
+    <aside class="w-[200px] shrink-0">
+      <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-4 sticky top-[64px]">
+        <button id="filter-all-btn" onclick="setFilter('all','')" class="filter-btn active">
+          <span>전체</span><span id="cnt-all" class="text-gray-400 text-[11px]">0</span>
+        </button>
+        <div>
+          <p class="text-[10.5px] font-bold text-gray-400 uppercase tracking-wide mb-1.5 px-2">난이도</p>
+          <div id="flt-level"></div>
+        </div>
+        <div>
+          <p class="text-[10.5px] font-bold text-gray-400 uppercase tracking-wide mb-1.5 px-2">교육방법</p>
+          <div id="flt-method"></div>
+        </div>
+        <div>
+          <p class="text-[10.5px] font-bold text-gray-400 uppercase tracking-wide mb-1.5 px-2">고객사</p>
+          <div id="flt-org"></div>
+        </div>
+      </div>
+    </aside>
+    <!-- Cards -->
+    <main class="flex-1 min-w-0">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold text-gray-700 text-[15px]" id="arc-title">커리큘럼 보관함</h2>
+        <button onclick="showView('form')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-[13px] font-medium">+ 새 커리큘럼</button>
+      </div>
+      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      <div id="empty-state" class="hidden text-center py-20 text-gray-400">
+        <div class="text-5xl mb-3">📭</div>
+        <p class="font-medium">저장된 커리큘럼이 없습니다</p>
+        <button onclick="showView('form')" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">✨ 새 커리큘럼 만들기</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══ VIEW: EDITOR ══ -->
+<div id="v-editor" class="hidden">
+  <!-- Info bar -->
+  <div class="bg-white border-b border-gray-100 px-5 py-2">
+    <div class="max-w-[1600px] mx-auto flex items-center gap-2 flex-wrap text-[12px]">
+      <button onclick="backToList()" class="text-gray-400 hover:text-gray-600 flex items-center gap-1 mr-1 shrink-0">← 목록</button>
+      <div class="w-px h-4 bg-gray-200 shrink-0"></div>
+      <span id="ed-org" class="badge tag-blue shrink-0"></span>
+      <span id="ed-purpose" class="text-gray-600 font-medium truncate max-w-[200px]"></span>
+      <span id="ed-level" class="badge tag-purple shrink-0"></span>
+      <span id="ed-hours" class="badge tag-green shrink-0"></span>
+      <span id="ed-method" class="badge tag-orange shrink-0"></span>
+      <span id="ed-extras" class="flex gap-1 flex-wrap ml-1"></span>
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="px-5 py-3 max-w-[1600px] mx-auto">
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="overflow-auto" style="max-height:calc(100vh - 105px);">
+      <div class="overflow-auto" style="max-height:calc(100vh - 140px);">
         <table class="w-full border-collapse" style="min-width:1120px;">
           <thead>
             <tr class="bg-gray-800 text-white text-[11.5px]">
-              <th class="px-3 py-2.5 w-9">
-                <input type="checkbox" id="chk-all" onchange="toggleAll(this)" class="w-3.5 h-3.5 rounded cursor-pointer">
-              </th>
+              <th class="px-3 py-2.5 w-9"><input type="checkbox" id="chk-all" onchange="toggleAll(this)" class="w-3.5 h-3.5 cursor-pointer"></th>
               <th class="px-3 py-2.5 text-left font-semibold" style="width:60px">구분</th>
               <th class="px-3 py-2.5 text-left font-semibold" style="width:160px">프로그램명</th>
               <th class="px-3 py-2.5 text-left font-semibold" style="min-width:220px">세부내용(커리큘럼)</th>
@@ -151,515 +245,459 @@
         </table>
       </div>
     </div>
-    <div class="flex items-center justify-between mt-1.5 px-0.5">
+    <div class="flex items-center justify-between mt-1.5">
       <span id="row-count" class="text-[11.5px] text-gray-400"></span>
-      <span class="text-[11px] text-gray-300">* 본 커리큘럼은 수강생 수준 및 강사진에 따라 변경될 수 있습니다.</span>
-    </div>
-  </main>
-
-
-  <!-- ════════════════════════════════════════
-       AI 생성 설정 모달
-  ════════════════════════════════════════ -->
-  <div id="gen-modal" class="modal hidden" onclick="if(event.target===this)closeGenModal()">
-    <div class="modal-box max-w-[620px] max-h-[92vh] flex flex-col">
-
-      <!-- Header -->
-      <div class="px-6 pt-5 pb-4 border-b border-gray-100 flex items-center justify-between shrink-0">
-        <div>
-          <h2 class="font-bold text-gray-800 text-[16px]">✨ AI 커리큘럼 생성</h2>
-          <p class="text-[12px] text-gray-400 mt-0.5">입력 정보를 바탕으로 맞춤 커리큘럼을 자동으로 생성합니다</p>
-        </div>
-        <button onclick="closeGenModal()" class="text-gray-300 hover:text-gray-500 text-xl leading-none transition-colors">✕</button>
-      </div>
-
-      <!-- Scrollable body -->
-      <div class="overflow-y-auto flex-1 px-6 py-5 space-y-4">
-
-        <!-- Row 1: 기관명 + 교육명 -->
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="f-label">🏢 기관명</label>
-            <input id="g-org" type="text" placeholder="예: 국민건강보험공단" class="f-input" maxlength="40">
-          </div>
-          <div>
-            <label class="f-label">📋 교육명</label>
-            <input id="g-name" type="text" placeholder="예: AX 인재육성 역량강화 교육" class="f-input" maxlength="60">
-          </div>
-        </div>
-
-        <!-- Row 2: 수준 + 시간 + 형태 + 수강생 수 -->
-        <div class="grid grid-cols-4 gap-3">
-          <div>
-            <label class="f-label">📊 수강생 수준</label>
-            <select id="g-level" class="f-input">
-              <option value="입문">입문</option>
-              <option value="초급" selected>초급</option>
-              <option value="중급">중급</option>
-              <option value="심화">심화</option>
-            </select>
-          </div>
-          <div>
-            <label class="f-label">⏱ 총 강의시간</label>
-            <div class="flex items-center gap-1">
-              <input id="g-hours" type="number" value="7" min="1" max="80" class="f-input text-center">
-              <span class="text-[12px] text-gray-400 shrink-0">H</span>
-            </div>
-          </div>
-          <div>
-            <label class="f-label">🎓 교육 형태</label>
-            <select id="g-method" class="f-input">
-              <option value="대면(오프라인)">대면(오프라인)</option>
-              <option value="비대면(온라인)">비대면(온라인)</option>
-              <option value="온·오프라인 병행">온·오프라인 병행</option>
-            </select>
-          </div>
-          <div>
-            <label class="f-label">👥 수강생 수</label>
-            <div class="flex items-center gap-1">
-              <input id="g-count" type="number" placeholder="30" min="1" max="500" class="f-input text-center">
-              <span class="text-[12px] text-gray-400 shrink-0">명</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 3: 교육 대상 -->
-        <div>
-          <label class="f-label">👤 교육 대상 <span class="text-gray-400 font-normal">(수강생의 직군, 업무 특성, IT 친숙도 등)</span></label>
-          <textarea id="g-target" rows="2" placeholder="예: 행정직 직원(200명), IT 비전문가 중심, 평균 연령 40대, 엑셀 기본 활용 수준" class="f-input resize-none"></textarea>
-        </div>
-
-        <!-- Row 4: 교육 목표 -->
-        <div>
-          <label class="f-label">🎯 교육 목표 <span class="text-gray-400 font-normal">(이 교육으로 수강생이 무엇을 할 수 있어야 하는가)</span></label>
-          <textarea id="g-goal" rows="2" placeholder="예: ChatGPT를 활용해 공문·보고서를 스스로 작성할 수 있다 / 반복 행정업무를 AI로 자동화하는 아이디어를 도출할 수 있다" class="f-input resize-none"></textarea>
-        </div>
-
-        <!-- Row 5: 기타 특이사항 -->
-        <div>
-          <label class="f-label">📝 기타 특이사항 <span class="text-gray-400 font-normal">(도메인 특성, 보안 이슈, 강조 요소 등)</span></label>
-          <textarea id="g-extra" rows="3" placeholder="예: 의료기관 특성상 환자 개인정보 보안 강조 필요 / 업무 자동화(Agent) 실습 비중 높여줄 것 / 실습 PC 환경에서 인터넷 제한 있음 / 기존 ChatGPT 입문 교육 1회 수료한 그룹" class="f-input resize-none"></textarea>
-        </div>
-
-        <!-- Divider -->
-        <div class="border-t border-dashed border-gray-100 pt-1"></div>
-
-        <!-- Level guide -->
-        <div class="bg-blue-50 rounded-xl p-4 text-[12px] text-blue-800">
-          <p class="font-semibold mb-2">💡 수준별 기본 구성 가이드</p>
-          <div class="grid grid-cols-2 gap-x-6 gap-y-1 text-blue-700">
-            <div><b>입문</b> — AI 개념·도구 체험·간단한 프롬프트 (3~4모듈)</div>
-            <div><b>초급</b> — 프롬프트 엔지니어링·업무 실무적용 (4~5모듈)</div>
-            <div><b>중급</b> — Agent/RAG·데이터 분석·AX 과제 기획 (6~8모듈)</div>
-            <div><b>심화</b> — 고급 워크플로우·봇 제작·자동화 구축 (3차시)</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Footer buttons -->
-      <div class="px-6 py-4 border-t border-gray-100 flex gap-3 shrink-0">
-        <button onclick="runGeneration()"
-          class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 shadow-sm">
-          ✨ 커리큘럼 생성하기
-        </button>
-        <button onclick="closeGenModal()"
-          class="px-5 bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl text-[13px] transition-colors">
-          취소
-        </button>
-      </div>
+      <span class="text-[11px] text-gray-300">* 커리큘럼은 강사진 및 수강생 수준에 따라 변경될 수 있습니다.</span>
     </div>
   </div>
+</div>
 
-
-  <!-- ── API Key Modal ── -->
-  <div id="api-modal" class="modal hidden" onclick="if(event.target===this)closeApiModal()">
-    <div class="modal-box max-w-[400px] p-6">
-      <h3 class="font-semibold text-gray-800 text-[15px] mb-1">Claude API 키 설정</h3>
-      <p class="text-[12px] text-gray-400 mb-4">키는 이 브라우저(localStorage)에만 저장됩니다.</p>
-      <input id="api-key-input" type="password" placeholder="sk-ant-api03-..."
-        class="f-input mb-1 font-mono">
-      <p class="text-[11px] text-gray-400 mb-4">
-        <a href="https://console.anthropic.com" target="_blank" class="text-blue-500 underline">console.anthropic.com</a>에서 발급
-      </p>
-      <div class="flex gap-2">
-        <button onclick="saveApiKey()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium">저장</button>
-        <button onclick="closeApiModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 py-2 rounded-lg text-sm">취소</button>
-      </div>
+<!-- ══ MODAL: API Key ══ -->
+<div id="api-modal" class="modal hidden" onclick="if(event.target===this)closeApiModal()">
+  <div class="modal-box max-w-[400px] p-6">
+    <h3 class="font-semibold text-gray-800 text-[15px] mb-1">Claude API 키 설정</h3>
+    <p class="text-[12px] text-gray-400 mb-3">키는 이 브라우저(localStorage)에만 저장됩니다.</p>
+    <input id="api-key-input" type="password" placeholder="sk-ant-api03-..." class="f-input font-mono mb-1">
+    <p class="text-[11px] text-gray-400 mb-4"><a href="https://console.anthropic.com" target="_blank" class="text-blue-500 underline">console.anthropic.com</a>에서 발급</p>
+    <div class="flex gap-2">
+      <button onclick="saveApiKey()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium">저장</button>
+      <button onclick="closeApiModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 py-2 rounded-lg text-sm">취소</button>
     </div>
   </div>
+</div>
 
-  <!-- ── Loading Modal ── -->
-  <div id="loading-modal" class="modal hidden">
-    <div class="bg-white rounded-xl shadow-xl px-12 py-10 flex flex-col items-center gap-5">
-      <div class="spinner"></div>
-      <div class="text-center">
-        <p class="font-semibold text-gray-700 text-[14px]">AI가 커리큘럼을 생성하고 있습니다</p>
-        <p class="text-[12px] text-gray-400 mt-1" id="loading-msg">교육 대상과 목표를 분석 중...</p>
-      </div>
+<!-- ══ MODAL: Loading ══ -->
+<div id="loading-modal" class="modal hidden">
+  <div class="bg-white rounded-xl shadow-xl px-12 py-10 flex flex-col items-center gap-5">
+    <div class="spinner"></div>
+    <div class="text-center">
+      <p class="font-semibold text-gray-700 text-[14px]">AI가 커리큘럼을 생성하고 있습니다</p>
+      <p class="text-[12px] text-gray-400 mt-1" id="loading-msg">교육 정보를 분석 중...</p>
     </div>
   </div>
+</div>
 
+<script>
+/* ─── Constants ─── */
+const DATA_KEYS = ['구분','프로그램명','세부내용','실습내용','산출물','강의방법','활용AI도구','강의시간'];
+const METHOD_OPTS = ['이론','이론+실습','실습'];
+const STORE_KEY = 'd1_curricula_v1';
 
-  <script>
-  /* ─────────────────────────────────────
-     Constants & State
-  ───────────────────────────────────── */
-  const DATA_KEYS = ['구분','프로그램명','세부내용','실습내용','산출물','강의방법','활용AI도구','강의시간'];
-  const METHOD_OPTIONS = ['이론','이론+실습','실습'];
-  const STORAGE_KEY = 'd1_curriculum_v2';
-  const META_KEY    = 'd1_curriculum_meta';
+const EXTRAS = [
+  {id:'security',   label:'🔒 개인정보·보안 강조'},
+  {id:'practice',   label:'🛠 실습 비중 확대'},
+  {id:'automation', label:'🤖 업무 자동화(Agent)'},
+  {id:'workshop',   label:'🎤 발표·워크숍 포함'},
+  {id:'nonet',      label:'🚫 인터넷 제한 환경'},
+  {id:'expert',     label:'⭐ 기존 AI 교육 이수자'},
+  {id:'free',       label:'🆓 무료 도구만 사용'},
+  {id:'document',   label:'📄 문서·보고서 작성 중심'},
+  {id:'data',       label:'📊 데이터 분석 포함'},
+  {id:'group',      label:'👥 그룹·팀 실습 중심'},
+];
 
-  const DEFAULT_DATA = [
-    { 구분:'M1', 프로그램명:'생성형 AI 개념·활용', 세부내용:'생성형 AI 개념 및 트렌드\n생성형 AI 종류 및 작동 원리 이해\n주요 AI 도구 기능분석 및 체험', 실습내용:'주요 AI 도구 체험 실습\nAI 활용 MAP 만들기', 산출물:'AI 활용 MAP', 강의방법:'이론+실습', 활용AI도구:'ChatGPT, Gemini, Claude', 강의시간:'2H' },
-    { 구분:'M2', 프로그램명:'프롬프트 엔지니어링 기초 및 실무적용', 세부내용:'프롬프트 구조(역할/조건/출력) 이해\n질문 방식에 따른 결과 차이 비교\n부서별 반복업무 AI 활용 프롬프트 설계', 실습내용:'사무국 자료분석 및 요약\n민원 대응 매뉴얼 제작', 산출물:'프롬프트 기초 설계서\n민원응대 프롬프트', 강의방법:'이론+실습', 활용AI도구:'ChatGPT, MS Office', 강의시간:'3H' },
-    { 구분:'M3', 프로그램명:'AI 윤리 및 보안수칙', 세부내용:'AI 활용 시 보안·개인정보·데이터활용 기준\n부서별 민감정보 AI 활용 시 보안수칙', 실습내용:'-', 산출물:'AI 보안 가이드라인', 강의방법:'이론', 활용AI도구:'ChatGPT', 강의시간:'1H' },
-    { 구분:'M4', 프로그램명:'AI 오류검증 및 활용전략', 세부내용:'생성형 AI 환각(Hallucination), 편향 이해\nAI 결과물 검증 체계 확립\n업무정확성 검증 체크리스트 만들기', 실습내용:'AI 체크리스트 만들기', 산출물:'AI 체크리스트', 강의방법:'이론+실습', 활용AI도구:'ChatGPT', 강의시간:'1H' }
-  ];
+const LEVEL_GUIDE = {
+  입문:'3~4개 모듈: AI 기초 개념 → 도구 체험 → 간단한 프롬프트 → AI 윤리/보안',
+  초급:'4~5개 모듈: 생성형AI 개념+도구 → 프롬프트 엔지니어링 → 실무 문서 활용 → AI 윤리/보안 → 오류검증',
+  중급:'6~8개 모듈(2일): AI원리/LLM → 프롬프트 심화 → RAG 실습 → Agent 만들기 → 데이터 분석/시각화 → AX 과제 기획·발표',
+  심화:'3차시: 1차시-AI도구 비교/NotebookLM 심화 / 2차시-업무자동화 워크플로우 / 3차시-봇 제작+성과공유',
+};
 
-  let rows = loadData();
-  let lastMeta = loadMeta();
+/* ─── State ─── */
+let curricula = loadCurricula();
+let currId = null;
+let rows = [];
+let currMeta = {};
+let activeFilter = {type:'all', value:''};
 
-  /* ─────────────────────────────────────
-     Persistence
-  ───────────────────────────────────── */
-  function loadData() {
-    try { const s = localStorage.getItem(STORAGE_KEY); return s ? JSON.parse(s) : [...DEFAULT_DATA]; }
-    catch { return [...DEFAULT_DATA]; }
-  }
-  function loadMeta() {
-    try { const s = localStorage.getItem(META_KEY); return s ? JSON.parse(s) : {}; }
-    catch { return {}; }
-  }
-  function saveData()  { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch {} }
-  function saveMeta(m) { try { localStorage.setItem(META_KEY, JSON.stringify(m)); lastMeta = m; } catch {} }
+/* ─── Persistence ─── */
+function loadCurricula(){try{const s=localStorage.getItem(STORE_KEY);return s?JSON.parse(s):[]; }catch{return[];}}
+function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(curricula));}catch{}}
+function genId(){return 'c_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);}
 
-  /* ─────────────────────────────────────
-     Sync DOM → rows[] before re-render
-  ───────────────────────────────────── */
-  function syncDOM() {
-    document.querySelectorAll('[data-row]').forEach(el => {
-      const i = +el.dataset.row, k = el.dataset.key;
-      if (!rows[i] || !k) return;
-      rows[i][k] = el.tagName === 'DIV' ? el.innerText.trim() : el.value;
+/* ─── Views ─── */
+function showView(v){
+  ['form','archive','editor'].forEach(id=>{
+    document.getElementById('v-'+id).classList.toggle('hidden', id!==v);
+  });
+  document.getElementById('tab-form').classList.toggle('active', v==='form');
+  document.getElementById('tab-archive').classList.toggle('active', v==='archive');
+  document.getElementById('ed-actions').classList.toggle('hidden', v!=='editor');
+  if(v==='archive') renderArchive();
+  updateBadge();
+}
+
+function updateBadge(){
+  const b=document.getElementById('arc-badge');
+  if(curricula.length){b.textContent=curricula.length;b.classList.remove('hidden');}
+  else b.classList.add('hidden');
+}
+
+/* ─── Checkbox rendering ─── */
+function renderExtras(container, selected=[]){
+  container.innerHTML='';
+  EXTRAS.forEach(item=>{
+    const label=document.createElement('label');
+    label.className='check-label';
+    const chk=document.createElement('input');
+    chk.type='checkbox'; chk.value=item.id; chk.id='chk-'+item.id;
+    if(selected.includes(item.id)) chk.checked=true;
+    const span=document.createElement('span'); span.textContent=item.label;
+    label.appendChild(chk); label.appendChild(span);
+    container.appendChild(label);
+  });
+}
+
+function getChecked(){
+  return EXTRAS.filter(e=>document.getElementById('chk-'+e.id)?.checked).map(e=>e.id);
+}
+
+/* ─── Form → Generate ─── */
+function handleGenerate(){
+  const apiKey=localStorage.getItem('d1_claude_key');
+  if(!apiKey){openApiModal();return;}
+  const org=document.getElementById('f-org').value.trim();
+  if(!org){showToast('고객사명을 입력해주세요.','warn');return;}
+  const meta={
+    org,
+    purpose: document.getElementById('f-purpose').value.trim(),
+    target:  document.getElementById('f-target').value.trim(),
+    method:  document.querySelector('input[name="f-method"]:checked')?.value||'대면(오프라인)',
+    level:   document.querySelector('input[name="f-level"]:checked')?.value||'초급',
+    hours:   document.getElementById('f-hours').value||'7',
+    extras:  getChecked(),
+    extraCustom: document.getElementById('f-extra-custom').value.trim(),
+  };
+  runGen(meta);
+}
+
+async function runGen(meta, replaceId=null){
+  const apiKey=localStorage.getItem('d1_claude_key');
+  document.getElementById('loading-modal').classList.remove('hidden');
+  setMsg('교육 정보를 분석 중...');
+  setTimeout(()=>setMsg('수준별 커리큘럼 구조 설계 중...'),1800);
+  setTimeout(()=>setMsg('세부 모듈 내용 작성 중...'),3600);
+
+  const extrasText = meta.extras.map(id=>EXTRAS.find(e=>e.id===id)?.label||id).join(', ')||'없음';
+  const prompt = buildPrompt(meta, extrasText);
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':apiKey,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-request-source':'browser'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4096,messages:[{role:'user',content:prompt}]})
     });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${res.status}`);}
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'';
+    const match=text.match(/\{[\s\S]*\}/);
+    if(!match) throw new Error('응답에서 JSON을 찾을 수 없습니다.');
+    const parsed=JSON.parse(match[0]);
+    if(!Array.isArray(parsed.modules)||!parsed.modules.length) throw new Error('모듈 데이터가 비어 있습니다.');
+
+    const newRows=parsed.modules.map(m=>({
+      구분:m.구분||'', 프로그램명:m.프로그램명||'', 세부내용:m.세부내용||'',
+      실습내용:m.실습내용||'', 산출물:m.산출물||'',
+      강의방법:METHOD_OPTS.includes(m.강의방법)?m.강의방법:'이론+실습',
+      활용AI도구:m.활용AI도구||'ChatGPT', 강의시간:m.강의시간||'1H'
+    }));
+
+    const id=replaceId||genId();
+    const entry={id, createdAt:new Date().toISOString(), meta, rows:newRows};
+    const idx=curricula.findIndex(c=>c.id===id);
+    if(idx>=0) curricula[idx]=entry; else curricula.unshift(entry);
+    persist(); updateBadge();
+    openEditor(id);
+    showToast(`✅ ${newRows.length}개 모듈 생성 완료!`);
+  }catch(err){
+    console.error(err);
+    showToast('오류: '+err.message,'error');
+  }finally{
+    document.getElementById('loading-modal').classList.add('hidden');
   }
+}
 
-  /* ─────────────────────────────────────
-     Render
-  ───────────────────────────────────── */
-  function render() {
-    const tbody = document.getElementById('tbody');
-    tbody.innerHTML = '';
-    rows.forEach((row, i) => {
-      const tr = document.createElement('tr');
-      tr.dataset.row = i;
-      tr.className = 'border-t border-gray-100';
-
-      // Checkbox
-      const tdC = document.createElement('td');
-      tdC.className = 'px-3 py-1 text-center align-top';
-      const chk = document.createElement('input');
-      chk.type = 'checkbox'; chk.className = 'row-chk w-3.5 h-3.5 rounded cursor-pointer'; chk.dataset.row = i;
-      chk.addEventListener('change', e => { e.target.closest('tr').classList.toggle('selected', e.target.checked); updateSelectAll(); });
-      tdC.appendChild(chk); tr.appendChild(tdC);
-
-      DATA_KEYS.forEach(key => {
-        const td = document.createElement('td');
-        td.className = 'px-1 py-0.5 align-top';
-
-        if (key === '강의방법') {
-          const sel = document.createElement('select');
-          sel.className = 'sel-input'; sel.dataset.row = i; sel.dataset.key = key;
-          METHOD_OPTIONS.forEach(o => { const op = document.createElement('option'); op.value = op.textContent = o; if (o === row[key]) op.selected = true; sel.appendChild(op); });
-          sel.addEventListener('change', e => { rows[i][key] = e.target.value; saveData(); });
-          td.appendChild(sel);
-        } else if (key === '강의시간') {
-          const inp = document.createElement('input');
-          inp.type = 'text'; inp.className = 'txt-input'; inp.value = row[key] || ''; inp.placeholder = '1H';
-          inp.dataset.row = i; inp.dataset.key = key;
-          inp.addEventListener('input', e => { rows[i][key] = e.target.value; });
-          inp.addEventListener('blur', () => { updateCount(); saveData(); });
-          td.appendChild(inp);
-        } else {
-          const div = document.createElement('div');
-          div.contentEditable = 'true'; div.className = 'cell-edit';
-          div.dataset.row = i; div.dataset.key = key;
-          div.innerText = row[key] || '';
-          div.addEventListener('blur', e => { rows[i][key] = e.target.innerText.trim(); saveData(); });
-          td.appendChild(div);
-        }
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
-    updateCount();
-    renderInfoBar();
-  }
-
-  function updateCount() {
-    let total = 0;
-    rows.forEach(r => { const n = parseFloat((r.강의시간||'').replace(/[^0-9.]/g,'')); if (!isNaN(n)) total += n; });
-    document.getElementById('row-count').textContent = `${rows.length}개 모듈 · 총 ${total}H`;
-  }
-
-  function renderInfoBar() {
-    const m = lastMeta;
-    const setChip = (id, text, show) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.textContent = text || '';
-      el.classList.toggle('hidden', !show);
-    };
-    const hasAny = m.org || m.name || m.level;
-    setChip('chip-org',   m.org,    !!m.org);
-    setChip('chip-name',  m.name,   !!m.name);
-    setChip('chip-level', m.level,  !!m.level);
-    setChip('chip-hours', m.hours ? m.hours+'H' : '', !!m.hours);
-    setChip('chip-method', m.method, !!m.method);
-    const ph = document.getElementById('chip-placeholder');
-    if (ph) ph.classList.toggle('hidden', hasAny);
-  }
-
-  /* ─────────────────────────────────────
-     Row Operations
-  ───────────────────────────────────── */
-  function addRow() {
-    syncDOM();
-    rows.push({ 구분:`M${rows.length+1}`, 프로그램명:'', 세부내용:'', 실습내용:'', 산출물:'', 강의방법:'이론+실습', 활용AI도구:'ChatGPT', 강의시간:'1H' });
-    render(); saveData();
-    const edits = document.querySelectorAll('.cell-edit');
-    if (edits.length >= 7) edits[edits.length - 7].focus();
-  }
-
-  function deleteSelected() {
-    syncDOM();
-    const del = new Set(Array.from(document.querySelectorAll('.row-chk:checked')).map(c => +c.dataset.row));
-    if (!del.size) { showToast('삭제할 행을 선택하세요.', 'warn'); return; }
-    rows = rows.filter((_, i) => !del.has(i));
-    render(); saveData();
-    showToast(`${del.size}개 행 삭제됨`);
-  }
-
-  function toggleAll(chk) {
-    document.querySelectorAll('.row-chk').forEach(c => { c.checked = chk.checked; c.closest('tr').classList.toggle('selected', chk.checked); });
-  }
-  function updateSelectAll() {
-    const all = document.querySelectorAll('.row-chk'), chk = document.querySelectorAll('.row-chk:checked');
-    const el = document.getElementById('chk-all');
-    el.checked = all.length && all.length === chk.length;
-    el.indeterminate = chk.length > 0 && chk.length < all.length;
-  }
-
-  /* ─────────────────────────────────────
-     Generation Modal
-  ───────────────────────────────────── */
-  function openGenModal() {
-    // Pre-fill from lastMeta
-    const m = lastMeta;
-    if (m.org)    document.getElementById('g-org').value    = m.org;
-    if (m.name)   document.getElementById('g-name').value   = m.name;
-    if (m.level)  document.getElementById('g-level').value  = m.level;
-    if (m.hours)  document.getElementById('g-hours').value  = m.hours;
-    if (m.method) document.getElementById('g-method').value = m.method;
-    if (m.count)  document.getElementById('g-count').value  = m.count;
-    if (m.target) document.getElementById('g-target').value = m.target;
-    if (m.goal)   document.getElementById('g-goal').value   = m.goal;
-    if (m.extra)  document.getElementById('g-extra').value  = m.extra;
-    document.getElementById('gen-modal').classList.remove('hidden');
-    setTimeout(() => document.getElementById('g-org').focus(), 100);
-  }
-  function closeGenModal() { document.getElementById('gen-modal').classList.add('hidden'); }
-
-  /* ─────────────────────────────────────
-     API Key Modal
-  ───────────────────────────────────── */
-  function openApiModal()  { document.getElementById('api-key-input').value = localStorage.getItem('d1_claude_key')||''; document.getElementById('api-modal').classList.remove('hidden'); }
-  function closeApiModal() { document.getElementById('api-modal').classList.add('hidden'); }
-  function saveApiKey()    { const k = document.getElementById('api-key-input').value.trim(); if (k) { localStorage.setItem('d1_claude_key', k); showToast('API 키가 저장되었습니다.'); } closeApiModal(); }
-
-  /* ─────────────────────────────────────
-     AI Generation
-  ───────────────────────────────────── */
-  async function runGeneration() {
-    const apiKey = localStorage.getItem('d1_claude_key');
-    if (!apiKey) { closeGenModal(); openApiModal(); return; }
-
-    const meta = {
-      org:    document.getElementById('g-org').value.trim()    || '공공기관',
-      name:   document.getElementById('g-name').value.trim()   || 'AI 활용역량 강화 교육',
-      level:  document.getElementById('g-level').value,
-      hours:  document.getElementById('g-hours').value         || '7',
-      method: document.getElementById('g-method').value,
-      count:  document.getElementById('g-count').value,
-      target: document.getElementById('g-target').value.trim(),
-      goal:   document.getElementById('g-goal').value.trim(),
-      extra:  document.getElementById('g-extra').value.trim(),
-    };
-
-    closeGenModal();
-    document.getElementById('loading-modal').classList.remove('hidden');
-    setLoadingMsg('교육 대상과 목표를 분석 중...');
-    setTimeout(() => setLoadingMsg('수준별 커리큘럼 구조 설계 중...'), 1800);
-    setTimeout(() => setLoadingMsg('세부 모듈 내용 작성 중...'), 3600);
-
-    const levelGuide = {
-      입문: '3~4개 모듈: ① AI 기초 개념 이해 ② 주요 도구 체험 ③ 간단한 프롬프트 작성 ④ AI 윤리/보안',
-      초급: '4~5개 모듈: ① 생성형AI 개념+도구 ② 프롬프트 엔지니어링 기초 ③ 실무 문서 활용 ④ AI 윤리/보안 ⑤ 오류 검증',
-      중급: '6~8개 모듈(2일): ① AI 원리/LLM ② 프롬프트 기초·심화 ③ RAG 개념 실습 ④ Agent 만들기 ⑤ 데이터 분석/시각화 ⑥ AX 과제 기획·발표',
-      심화: '3차시: 1차시-AI 도구 비교/NotebookLM 심화 2차시-업무자동화 워크플로우 3차시-봇 제작+성과공유',
-    };
-
-    const prompt = `당신은 AI 활용역량 강화 교육 커리큘럼 전문 설계자입니다.
-아래 조건을 꼼꼼히 반영하여 최적의 교육 커리큘럼을 JSON으로 생성하세요.
+function buildPrompt(meta, extrasText){
+  return `당신은 공공기관 AI 활용역량 강화 교육 전문 커리큘럼 설계자입니다.
+실제 제안서(국민건강보험공단·공무원연금공단·인천국제공항공사 등) 데이터 기반으로 최적 커리큘럼을 JSON으로 생성하세요.
 
 ══ 기본 정보 ══
-교육명: ${meta.name}
 기관명: ${meta.org}
-교육 형태: ${meta.method}
+교육목적: ${meta.purpose||'AI 활용역량 강화'}
+교육대상: ${meta.target||'공공기관 직원'}
+교육방법: ${meta.method}
 교육수준: ${meta.level}
-총 강의시간: ${meta.hours}H${meta.count ? `\n수강생 수: ${meta.count}명` : ''}
+총 강의시간: ${meta.hours}H
 
-══ 교육 대상 ══
-${meta.target || '공공기관 직원(비개발자, IT 비전문가 중심)'}
+══ 기타사항 (반드시 반영) ══
+체크 항목: ${extrasText}
+추가 요청: ${meta.extraCustom||'없음'}
 
-══ 교육 목표 ══
-${meta.goal || 'AI 도구를 업무에 실질적으로 활용할 수 있는 역량 확보'}
+══ 수준별 가이드 ══
+${LEVEL_GUIDE[meta.level]}
 
-══ 기타 특이사항 ══
-${meta.extra || '없음'}
-
-══ 수준 가이드 ══
-${levelGuide[meta.level]}
+══ 실제 제안서 기반 설계 원칙 ══
+• 공공기관 특성: 행정업무(공문·보고서·회의록·민원대응) 실습 위주
+• 입문/초급: 개념 이해 → 도구 체험 → 프롬프트 실습 → 윤리/보안 순서
+• 중급: 원리 → 프롬프트 심화 → RAG/Agent → 데이터분석 → AX 과제 기획
+• 심화: 차시 구분, 고급 워크플로우, 봇 제작, 성과 공유
+• 체크된 기타사항은 모듈 설계에 직접 반영할 것
 
 ══ 컬럼 작성 기준 ══
-- 구분: M1, M2 등 (심화는 1차시, 2차시 등)
-- 프로그램명: 모듈 핵심 주제 (20자 이내)
-- 세부내용: 강의 세부 항목 3~5개, 줄바꿈(\\n)으로 구분
-- 실습내용: 수강생이 직접 수행하는 실습 (없으면 "-")
-- 산출물: 실습 완료 후 결과물 (없으면 "-")
+- 구분: M1, M2 (심화: 1차시, 2차시)
+- 프로그램명: 20자 이내
+- 세부내용: 3~5개 항목, 줄바꿈(\\n)으로 구분
+- 실습내용: 수강생이 직접 수행 (없으면 "-")
+- 산출물: 실습 결과물 (없으면 "-")
 - 강의방법: "이론", "이론+실습", "실습" 중 하나만
-- 활용AI도구: 실제 사용 도구 (ChatGPT, Gemini, Claude, NotebookLM, Copilot, DALL-E, MS Office, Google Sheets, Canva 등)
-- 강의시간: 모든 모듈 시간의 합이 반드시 ${meta.hours}H. 형식: "1H", "2H", "1.5H"
+- 활용AI도구: ChatGPT, Gemini, Claude, NotebookLM, Copilot, DALL-E, MS Office 등
+- 강의시간: 모든 모듈 합계 = 반드시 ${meta.hours}H. 형식: "1H","2H","1.5H"
 
-⚠ 교육 대상·목표·특이사항을 최대한 반영하여 기관 맞춤형으로 설계할 것.
 ⚠ JSON만 출력. 마크다운·설명 없이.
-
 {"modules":[{"구분":"M1","프로그램명":"...","세부내용":"항목1\\n항목2\\n항목3","실습내용":"...","산출물":"...","강의방법":"이론+실습","활용AI도구":"ChatGPT","강의시간":"2H"},...]}`
+}
 
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json',
-          'anthropic-dangerous-request-source': 'browser'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 4096,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
+/* ─── Editor ─── */
+function openEditor(id){
+  const c=curricula.find(x=>x.id===id);
+  if(!c) return;
+  currId=id; rows=c.rows.map(r=>({...r})); currMeta={...c.meta};
+  document.getElementById('ed-org').textContent=c.meta.org||'';
+  document.getElementById('ed-purpose').textContent=c.meta.purpose||'';
+  document.getElementById('ed-level').textContent=c.meta.level||'';
+  document.getElementById('ed-hours').textContent=(c.meta.hours||'')+'H';
+  document.getElementById('ed-method').textContent=c.meta.method||'';
+  const ex=document.getElementById('ed-extras');
+  ex.innerHTML='';
+  (c.meta.extras||[]).forEach(id=>{
+    const item=EXTRAS.find(e=>e.id===id);
+    if(item){const s=document.createElement('span');s.className='badge tag-gray';s.textContent=item.label;ex.appendChild(s);}
+  });
+  renderTable(); showView('editor');
+}
 
-      if (!res.ok) {
-        const e = await res.json().catch(() => ({}));
-        throw new Error(e.error?.message || `HTTP ${res.status}`);
+function backToList(){syncDOM();autoSaveNow();showView('archive');}
+
+function saveCurr(){syncDOM();autoSaveNow();showToast('💾 저장되었습니다.');}
+
+function autoSaveNow(){
+  const idx=curricula.findIndex(c=>c.id===currId);
+  if(idx>=0){curricula[idx].rows=rows.map(r=>({...r}));persist();}
+}
+
+let aTimer=null;
+function autoSave(){
+  clearTimeout(aTimer);
+  aTimer=setTimeout(autoSaveNow,800);
+}
+
+/* ─── Table render ─── */
+function syncDOM(){
+  document.querySelectorAll('[data-row]').forEach(el=>{
+    const i=+el.dataset.row,k=el.dataset.key;
+    if(!rows[i]||!k) return;
+    rows[i][k]=el.tagName==='DIV'?el.innerText.trim():el.value;
+  });
+}
+
+function renderTable(){
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML='';
+  rows.forEach((row,i)=>{
+    const tr=document.createElement('tr');
+    tr.dataset.row=i; tr.className='border-t border-gray-100';
+    const tdC=document.createElement('td');
+    tdC.className='px-3 py-1 text-center align-top';
+    const chk=document.createElement('input');
+    chk.type='checkbox';chk.className='row-chk w-3.5 h-3.5 cursor-pointer';chk.dataset.row=i;
+    chk.addEventListener('change',e=>{e.target.closest('tr').classList.toggle('selected',e.target.checked);updSelAll();});
+    tdC.appendChild(chk);tr.appendChild(tdC);
+    DATA_KEYS.forEach(key=>{
+      const td=document.createElement('td');td.className='px-1 py-0.5 align-top';
+      if(key==='강의방법'){
+        const sel=document.createElement('select');sel.className='sel-input';sel.dataset.row=i;sel.dataset.key=key;
+        METHOD_OPTS.forEach(o=>{const op=document.createElement('option');op.value=op.textContent=o;if(o===row[key])op.selected=true;sel.appendChild(op);});
+        sel.addEventListener('change',e=>{rows[i][key]=e.target.value;autoSave();});
+        td.appendChild(sel);
+      } else if(key==='강의시간'){
+        const inp=document.createElement('input');inp.type='text';inp.className='txt-input';inp.value=row[key]||'';inp.placeholder='1H';
+        inp.dataset.row=i;inp.dataset.key=key;
+        inp.addEventListener('input',e=>{rows[i][key]=e.target.value;});
+        inp.addEventListener('blur',()=>{updCount();autoSave();});
+        td.appendChild(inp);
+      } else {
+        const div=document.createElement('div');div.contentEditable='true';div.className='cell-edit';
+        div.dataset.row=i;div.dataset.key=key;div.innerText=row[key]||'';
+        div.addEventListener('blur',e=>{rows[i][key]=e.target.innerText.trim();autoSave();});
+        td.appendChild(div);
       }
-
-      const data = await res.json();
-      const text = data.content?.[0]?.text || '';
-      const match = text.match(/\{[\s\S]*\}/);
-      if (!match) throw new Error('응답에서 JSON을 찾을 수 없습니다.');
-
-      const parsed = JSON.parse(match[0]);
-      if (!Array.isArray(parsed.modules) || !parsed.modules.length)
-        throw new Error('모듈 데이터가 비어 있습니다.');
-
-      rows = parsed.modules.map(m => ({
-        구분: m.구분||'', 프로그램명: m.프로그램명||'', 세부내용: m.세부내용||'',
-        실습내용: m.실습내용||'', 산출물: m.산출물||'',
-        강의방법: METHOD_OPTIONS.includes(m.강의방법) ? m.강의방법 : '이론+실습',
-        활용AI도구: m.활용AI도구||'ChatGPT', 강의시간: m.강의시간||'1H'
-      }));
-
-      saveMeta(meta); saveData(); render();
-      showToast(`✅ ${rows.length}개 모듈 커리큘럼 생성 완료!`);
-
-    } catch (err) {
-      console.error(err);
-      showToast('오류: ' + err.message, 'error');
-    } finally {
-      document.getElementById('loading-modal').classList.add('hidden');
-    }
-  }
-
-  function setLoadingMsg(msg) {
-    const el = document.getElementById('loading-msg');
-    if (el) el.textContent = msg;
-  }
-
-  /* ─────────────────────────────────────
-     CSV Export
-  ───────────────────────────────────── */
-  function exportCSV() {
-    syncDOM();
-    const m = lastMeta;
-    const esc = v => `"${String(v||'').replace(/"/g,'""')}"`;
-    const csvRows = [
-      [`교육명: ${m.name||''}`,`기관명: ${m.org||''}`,`수준: ${m.level||''}`,`총시간: ${m.hours||''}H`,`형태: ${m.method||''}`],
-      m.target ? [`교육대상: ${m.target}`] : [],
-      m.goal   ? [`교육목표: ${m.goal}`]   : [],
-      [],
-      ['구분','프로그램명','세부내용(커리큘럼)','실습내용','산출물','강의방법','활용AI도구','강의시간'],
-      ...rows.map(r => [
-        r.구분, r.프로그램명,
-        (r.세부내용||'').replace(/\n/g,' | '),
-        (r.실습내용||'').replace(/\n/g,' | '),
-        (r.산출물||'').replace(/\n/g,' | '),
-        r.강의방법, r.활용AI도구, r.강의시간
-      ])
-    ].filter(r => r.length);
-
-    const csv = csvRows.map(r => r.map(esc).join(',')).join('\n');
-    const a = document.createElement('a');
-    const date = new Date().toLocaleDateString('ko-KR').replace(/\.\s?/g,'-').replace(/-$/,'');
-    a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'}));
-    a.download = `커리큘럼_${m.org||'기관'}_${m.level||''}_${date}.csv`;
-    a.click(); URL.revokeObjectURL(a.href);
-    showToast('엑셀 파일 다운로드 완료');
-  }
-
-  /* ─────────────────────────────────────
-     Toast
-  ───────────────────────────────────── */
-  function showToast(msg, type='success') {
-    const c = {success:'bg-gray-800', error:'bg-red-500', warn:'bg-amber-500'};
-    const t = document.createElement('div');
-    t.className = `toast ${c[type]||c.success}`; t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => { t.style.transition='opacity .3s'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 2800);
-  }
-
-  /* ─────────────────────────────────────
-     Keyboard
-  ───────────────────────────────────── */
-  document.addEventListener('keydown', e => {
-    if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { addRow(); e.preventDefault(); }
-    if (e.key==='Escape') { closeGenModal(); closeApiModal(); }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
   });
+  updCount();
+}
 
-  // Gen modal: Enter on last textarea triggers generation
-  document.getElementById('g-extra')?.addEventListener('keydown', e => {
-    if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); runGeneration(); }
+function updCount(){
+  let t=0;rows.forEach(r=>{const n=parseFloat((r.강의시간||'').replace(/[^0-9.]/g,''));if(!isNaN(n))t+=n;});
+  document.getElementById('row-count').textContent=`${rows.length}개 모듈 · 총 ${t}H`;
+}
+
+function addRow(){
+  syncDOM();
+  rows.push({구분:`M${rows.length+1}`,프로그램명:'',세부내용:'',실습내용:'',산출물:'',강의방법:'이론+실습',활용AI도구:'ChatGPT',강의시간:'1H'});
+  renderTable();autoSave();
+  const edits=document.querySelectorAll('.cell-edit');
+  if(edits.length>=7) edits[edits.length-7].focus();
+}
+
+function deleteSelected(){
+  syncDOM();
+  const del=new Set(Array.from(document.querySelectorAll('.row-chk:checked')).map(c=>+c.dataset.row));
+  if(!del.size){showToast('삭제할 행을 선택하세요.','warn');return;}
+  rows=rows.filter((_,i)=>!del.has(i));
+  renderTable();autoSave();showToast(`${del.size}개 행 삭제됨`);
+}
+
+function toggleAll(chk){document.querySelectorAll('.row-chk').forEach(c=>{c.checked=chk.checked;c.closest('tr').classList.toggle('selected',chk.checked);});}
+function updSelAll(){
+  const all=document.querySelectorAll('.row-chk'),chkd=document.querySelectorAll('.row-chk:checked');
+  const el=document.getElementById('chk-all');if(!el)return;
+  el.checked=all.length&&all.length===chkd.length;el.indeterminate=chkd.length>0&&chkd.length<all.length;
+}
+
+/* ─── Archive ─── */
+function renderArchive(){renderSidebar();renderCards();}
+
+function setFilter(type, value){
+  activeFilter={type,value};
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(type==='all') document.getElementById('filter-all-btn').classList.add('active');
+  renderCards();
+}
+
+function renderSidebar(){
+  const cnts={level:{},method:{},org:{}};
+  curricula.forEach(c=>{
+    const l=c.meta.level||'미분류',m=c.meta.method||'미분류',o=c.meta.org||'미분류';
+    cnts.level[l]=(cnts.level[l]||0)+1;
+    cnts.method[m]=(cnts.method[m]||0)+1;
+    cnts.org[o]=(cnts.org[o]||0)+1;
   });
+  document.getElementById('cnt-all').textContent=curricula.length;
+  const lvlOrder=['입문','초급','중급','심화'];
+  buildFilterGroup('flt-level','level',lvlOrder.filter(l=>cnts.level[l]),cnts.level);
+  buildFilterGroup('flt-method','method',Object.keys(cnts.method),cnts.method);
+  const orgSorted=Object.entries(cnts.org).sort((a,b)=>b[1]-a[1]).slice(0,7).map(e=>e[0]);
+  buildFilterGroup('flt-org','org',orgSorted,cnts.org);
+}
 
-  /* ─────────────────────────────────────
-     Init
-  ───────────────────────────────────── */
-  render();
-  if (!lastMeta || !lastMeta.org) document.getElementById('chip-placeholder')?.classList.remove('hidden');
-  </script>
+function buildFilterGroup(containerId, type, keys, cnts){
+  const cont=document.getElementById(containerId);cont.innerHTML='';
+  keys.forEach(k=>{
+    const btn=document.createElement('button');
+    btn.className='filter-btn'+(activeFilter.type===type&&activeFilter.value===k?' active':'');
+    btn.innerHTML=`<span class="truncate">${k}</span><span class="text-gray-400 text-[11px] shrink-0">${cnts[k]}</span>`;
+    btn.onclick=()=>{activeFilter={type,value:k};document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCards();};
+    cont.appendChild(btn);
+  });
+}
+
+function renderCards(){
+  const filtered=curricula.filter(c=>{
+    if(activeFilter.type==='all') return true;
+    if(activeFilter.type==='level') return c.meta.level===activeFilter.value;
+    if(activeFilter.type==='method') return c.meta.method===activeFilter.value;
+    if(activeFilter.type==='org') return c.meta.org===activeFilter.value;
+    return true;
+  });
+  const grid=document.getElementById('cards-grid');
+  const empty=document.getElementById('empty-state');
+  grid.innerHTML='';
+  if(!filtered.length){empty.classList.remove('hidden');return;}
+  empty.classList.add('hidden');
+  filtered.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='curr-card';
+    const date=new Date(c.createdAt).toLocaleDateString('ko-KR');
+    const totalH=c.rows.reduce((s,r)=>{const n=parseFloat((r.강의시간||'').replace(/[^0-9.]/g,''));return s+(isNaN(n)?0:n);},0);
+    const extHtml=(c.meta.extras||[]).slice(0,3).map(id=>{
+      const item=EXTRAS.find(e=>e.id===id);
+      return item?`<span class="badge tag-gray" style="font-size:10px">${item.label}</span>`:'';
+    }).join('');
+    card.innerHTML=`
+      <div class="flex items-start justify-between mb-2">
+        <h3 class="font-bold text-gray-800 text-[14px] leading-snug">${c.meta.org||'기관명 미입력'}</h3>
+        <button onclick="event.stopPropagation();delCurr('${c.id}')" class="text-gray-300 hover:text-red-400 text-xl leading-none ml-2 shrink-0 transition-colors">×</button>
+      </div>
+      <p class="text-[12px] text-gray-500 mb-3 line-clamp-2" style="-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;">${c.meta.purpose||'교육 목적 미입력'}</p>
+      <div class="flex flex-wrap gap-1.5 mb-2">
+        ${c.meta.level?`<span class="badge tag-purple">${c.meta.level}</span>`:''}
+        ${c.meta.method?`<span class="badge tag-orange">${c.meta.method.replace('(오프라인)','').replace('(온라인)','')}</span>`:''}
+        ${totalH?`<span class="badge tag-green">${totalH}H</span>`:''}
+        <span class="badge tag-gray">${c.rows.length}모듈</span>
+      </div>
+      ${extHtml?`<div class="flex flex-wrap gap-1 mb-2">${extHtml}</div>`:''}
+      <div class="flex items-center justify-between pt-3 border-t border-gray-100 mt-2">
+        <span class="text-[11px] text-gray-400">${date}</span>
+        <button class="text-[12px] text-blue-600 font-medium hover:underline">열기 →</button>
+      </div>`;
+    card.addEventListener('click',()=>openEditor(c.id));
+    grid.appendChild(card);
+  });
+}
+
+function delCurr(id){
+  if(!confirm('이 커리큘럼을 삭제하시겠습니까?')) return;
+  curricula=curricula.filter(c=>c.id!==id);
+  persist();updateBadge();renderArchive();showToast('삭제되었습니다.');
+}
+
+/* ─── CSV Export ─── */
+function exportCSV(){
+  syncDOM();
+  const m=currMeta;
+  const esc=v=>`"${String(v||'').replace(/"/g,'""')}"`;
+  const csvRows=[
+    [`교육목적: ${m.purpose||''}`,`기관명: ${m.org||''}`,`수준: ${m.level||''}`,`총시간: ${m.hours||''}H`,`형태: ${m.method||''}`],
+    m.target?[`교육대상: ${m.target}`]:[],
+    [],
+    ['구분','프로그램명','세부내용(커리큘럼)','실습내용','산출물','강의방법','활용AI도구','강의시간'],
+    ...rows.map(r=>[r.구분,r.프로그램명,(r.세부내용||'').replace(/\n/g,' | '),(r.실습내용||'').replace(/\n/g,' | '),(r.산출물||'').replace(/\n/g,' | '),r.강의방법,r.활용AI도구,r.강의시간])
+  ].filter(r=>r.length);
+  const csv=csvRows.map(r=>r.map(esc).join(',')).join('\n');
+  const a=document.createElement('a');
+  const date=new Date().toLocaleDateString('ko-KR').replace(/\.\s?/g,'-').replace(/-$/,'');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`커리큘럼_${m.org||'기관'}_${m.level||''}_${date}.csv`;
+  a.click();URL.revokeObjectURL(a.href);
+  showToast('엑셀 파일 다운로드 완료');
+}
+
+/* ─── API Key ─── */
+function openApiModal(){document.getElementById('api-key-input').value=localStorage.getItem('d1_claude_key')||'';document.getElementById('api-modal').classList.remove('hidden');}
+function closeApiModal(){document.getElementById('api-modal').classList.add('hidden');}
+function saveApiKey(){const k=document.getElementById('api-key-input').value.trim();if(k){localStorage.setItem('d1_claude_key',k);showToast('API 키 저장됨');}closeApiModal();}
+
+/* ─── Toast / Msg ─── */
+function showToast(msg,type='success'){
+  const c={success:'bg-gray-800',error:'bg-red-500',warn:'bg-amber-500'};
+  const t=document.createElement('div');t.className=`toast ${c[type]||c.success}`;t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.transition='opacity .3s';t.style.opacity='0';setTimeout(()=>t.remove(),300);},2800);
+}
+function setMsg(msg){const el=document.getElementById('loading-msg');if(el)el.textContent=msg;}
+
+/* ─── Keyboard ─── */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeApiModal();
+  const inEditor=!document.getElementById('v-editor').classList.contains('hidden');
+  if(inEditor&&(e.ctrlKey||e.metaKey)&&e.key==='Enter'){addRow();e.preventDefault();}
+});
+
+/* ─── Init ─── */
+renderExtras(document.getElementById('extra-checks'));
+showView('form');
+</script>
 </body>
 </html>
