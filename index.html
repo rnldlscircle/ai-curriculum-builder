@@ -10,134 +10,111 @@
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
 
     .cell-edit {
-      min-height: 38px;
-      padding: 6px 8px;
-      width: 100%;
-      outline: none;
-      border: 2px solid transparent;
-      border-radius: 5px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      line-height: 1.55;
-      font-size: 12.5px;
+      min-height: 38px; padding: 6px 8px; width: 100%; outline: none;
+      border: 2px solid transparent; border-radius: 5px;
+      white-space: pre-wrap; word-break: break-word;
+      line-height: 1.55; font-size: 12.5px;
       transition: border-color .12s, background .12s;
     }
     .cell-edit:hover { border-color: #d1d5db; }
     .cell-edit:focus { border-color: #3b82f6; background: #eff6ff; }
 
-    .sel-input {
-      width: 100%;
-      border: 2px solid transparent;
-      border-radius: 5px;
-      padding: 6px 8px;
-      font-size: 12.5px;
-      background: transparent;
-      outline: none;
-      cursor: pointer;
+    .sel-input, .txt-input {
+      width: 100%; border: 2px solid transparent; border-radius: 5px;
+      padding: 6px 8px; font-size: 12.5px; background: transparent; outline: none;
       transition: border-color .12s, background .12s;
-      -webkit-appearance: auto;
     }
-    .sel-input:hover { border-color: #d1d5db; }
-    .sel-input:focus { border-color: #3b82f6; background: #eff6ff; }
+    .sel-input { cursor: pointer; -webkit-appearance: auto; }
+    .txt-input { text-align: center; }
+    .sel-input:hover, .txt-input:hover { border-color: #d1d5db; }
+    .sel-input:focus, .txt-input:focus { border-color: #3b82f6; background: #eff6ff; }
 
-    .txt-input {
-      width: 100%;
-      border: 2px solid transparent;
-      border-radius: 5px;
-      padding: 6px 8px;
-      font-size: 12.5px;
-      background: transparent;
-      outline: none;
-      text-align: center;
-      transition: border-color .12s, background .12s;
+    /* Form fields in modal */
+    .f-input {
+      width: 100%; border: 1.5px solid #e5e7eb; border-radius: 8px;
+      padding: 9px 12px; font-size: 13px; outline: none; background: #fff;
+      transition: border-color .15s, box-shadow .15s;
+      font-family: inherit;
     }
-    .txt-input:hover { border-color: #d1d5db; }
-    .txt-input:focus { border-color: #3b82f6; background: #eff6ff; }
+    .f-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+    .f-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; display: block; }
+    .f-hint  { font-size: 11px; color: #9ca3af; margin-top: 3px; }
 
     thead th { position: sticky; top: 0; z-index: 10; }
-
     tr:nth-child(even) td { background: #f9fafb; }
     tr:hover td { background: #eff6ff !important; transition: background .1s; }
     tr.selected td { background: #fef9c3 !important; }
 
     .spinner {
-      width: 36px; height: 36px;
-      border: 3px solid #dbeafe;
-      border-top-color: #3b82f6;
-      border-radius: 50%;
+      width: 36px; height: 36px; border: 3px solid #dbeafe;
+      border-top-color: #3b82f6; border-radius: 50%;
       animation: spin .75s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
     .modal.hidden { display: none; }
+    .modal-box { background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.18); width: 100%; animation: popIn .2s ease; }
+    @keyframes popIn { from { opacity:0; transform:scale(.96) translateY(8px); } to { opacity:1; transform:none; } }
 
     .toast {
-      position: fixed; bottom: 20px; right: 20px;
-      padding: 10px 16px; border-radius: 8px;
-      color: #fff; font-size: 13px; font-weight: 500;
-      z-index: 200; animation: fadeIn .2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      position: fixed; bottom: 20px; right: 20px; padding: 10px 16px;
+      border-radius: 8px; color: #fff; font-size: 13px; font-weight: 500;
+      z-index: 200; animation: fadeIn .2s ease; box-shadow: 0 4px 12px rgba(0,0,0,.15);
     }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; }
+    .tag-blue { background:#dbeafe; color:#1d4ed8; }
+    .tag-green { background:#dcfce7; color:#15803d; }
+    .tag-purple { background:#ede9fe; color:#7c3aed; }
+    .tag-orange { background:#fed7aa; color:#c2410c; }
+
+    /* Info summary bar above table */
+    #info-bar { transition: all .2s; }
+    #info-bar.has-data { opacity:1; }
   </style>
 </head>
 <body class="bg-slate-100 min-h-screen">
 
-  <!-- Top Bar -->
+  <!-- ── Top Bar ── -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
     <div class="px-5 h-[52px] flex items-center gap-3 max-w-[1600px] mx-auto">
-      <!-- Logo -->
       <div class="flex items-center gap-2 shrink-0">
         <div class="w-7 h-7 bg-blue-600 rounded-md flex items-center justify-center">
-          <span class="text-white text-[10px] font-black tracking-tight">D1</span>
+          <span class="text-white text-[10px] font-black">D1</span>
         </div>
         <span class="font-semibold text-gray-800 text-[13.5px] hidden sm:block">AI 커리큘럼 빌더</span>
       </div>
-
       <div class="w-px h-5 bg-gray-200 shrink-0"></div>
 
-      <!-- Edu Info -->
-      <div class="flex items-center gap-2 flex-1 overflow-x-auto">
-        <input id="edu-org" type="text" placeholder="기관명" maxlength="30"
-          class="border border-gray-200 rounded-md px-2.5 py-1 text-[12.5px] w-28 shrink-0 focus:outline-none focus:border-blue-400 focus:bg-blue-50 placeholder-gray-300">
-        <input id="edu-name" type="text" placeholder="교육명 (예: AX 인재육성 역량강화 교육)" maxlength="60"
-          class="border border-gray-200 rounded-md px-2.5 py-1 text-[12.5px] w-60 shrink-0 focus:outline-none focus:border-blue-400 focus:bg-blue-50 placeholder-gray-300">
-        <select id="edu-level" class="border border-gray-200 rounded-md px-2 py-1 text-[12.5px] bg-white shrink-0 focus:outline-none focus:border-blue-400">
-          <option value="입문">입문</option>
-          <option value="초급" selected>초급</option>
-          <option value="중급">중급</option>
-          <option value="심화">심화</option>
-        </select>
-        <div class="flex items-center gap-1 shrink-0">
-          <input id="edu-hours" type="number" value="7" min="1" max="80"
-            class="border border-gray-200 rounded-md px-2 py-1 text-[12.5px] w-14 text-center focus:outline-none focus:border-blue-400">
-          <span class="text-[12px] text-gray-400">H</span>
-        </div>
-        <select id="edu-method" class="border border-gray-200 rounded-md px-2 py-1 text-[12.5px] bg-white shrink-0 focus:outline-none focus:border-blue-400">
-          <option value="대면">대면</option>
-          <option value="비대면">비대면</option>
-          <option value="온·오프라인 병행">온·오프라인</option>
-        </select>
+      <!-- Summary chips (filled after generation) -->
+      <div id="info-bar" class="flex items-center gap-2 flex-1 overflow-x-auto text-[12px]">
+        <span id="chip-org"   class="badge tag-blue hidden"></span>
+        <span id="chip-name"  class="text-gray-600 font-medium hidden" id="chip-name"></span>
+        <span id="chip-level" class="badge tag-purple hidden"></span>
+        <span id="chip-hours" class="badge tag-green hidden"></span>
+        <span id="chip-method" class="badge tag-orange hidden"></span>
+        <span class="text-gray-300 text-xs hidden" id="chip-placeholder">← AI 생성 버튼을 눌러 커리큘럼을 만들어보세요</span>
       </div>
 
       <!-- Actions -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <button onclick="generateWithAI()" id="gen-btn"
-          class="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-[12.5px] font-medium transition-colors shadow-sm">
+        <button onclick="openGenModal()" id="gen-btn"
+          class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-colors shadow-sm">
           ✨ AI 생성
         </button>
         <button onclick="addRow()"
           class="border border-gray-200 hover:bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-md text-[12.5px] transition-colors">
-          + 추가
+          + 행 추가
         </button>
         <button onclick="deleteSelected()"
           class="border border-gray-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 text-gray-500 px-2.5 py-1.5 rounded-md text-[12.5px] transition-colors">
-          − 삭제
+          − 행 삭제
         </button>
         <div class="w-px h-4 bg-gray-200"></div>
         <button onclick="exportCSV()"
@@ -145,17 +122,15 @@
           ↓ 엑셀
         </button>
         <button onclick="openApiModal()" title="API 키 설정"
-          class="border border-gray-200 hover:bg-gray-50 text-gray-400 w-7 h-7 rounded-md flex items-center justify-center transition-colors text-sm">
-          ⚙
-        </button>
+          class="border border-gray-200 hover:bg-gray-50 text-gray-400 w-7 h-7 rounded-md flex items-center justify-center text-sm transition-colors">⚙</button>
       </div>
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- ── Main Table ── -->
   <main class="px-5 py-3 max-w-[1600px] mx-auto">
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="overflow-auto" style="max-height: calc(100vh - 100px);">
+      <div class="overflow-auto" style="max-height:calc(100vh - 105px);">
         <table class="w-full border-collapse" style="min-width:1120px;">
           <thead>
             <tr class="bg-gray-800 text-white text-[11.5px]">
@@ -182,171 +157,279 @@
     </div>
   </main>
 
-  <!-- API Key Modal -->
-  <div id="api-modal" class="modal hidden" onclick="if(event.target===this)closeApiModal()">
-    <div class="bg-white rounded-xl shadow-xl p-6 w-[400px] mx-4">
-      <h3 class="font-semibold text-gray-800 text-[15px] mb-1">Claude API 키 설정</h3>
-      <p class="text-[12px] text-gray-400 mb-4">AI 자동생성 기능에 필요합니다. 키는 이 브라우저(localStorage)에만 저장됩니다.</p>
-      <input id="api-key-input" type="password" placeholder="sk-ant-api03-..."
-        class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 focus:bg-blue-50 mb-1 font-mono">
-      <p class="text-[11px] text-gray-400 mb-4">
-        API 키는 <a href="https://console.anthropic.com" target="_blank" class="text-blue-500 underline">console.anthropic.com</a>에서 발급받을 수 있습니다.
-      </p>
-      <div class="flex gap-2">
-        <button onclick="saveApiKey()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors">저장</button>
-        <button onclick="closeApiModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 py-2 rounded-lg text-sm transition-colors">취소</button>
+
+  <!-- ════════════════════════════════════════
+       AI 생성 설정 모달
+  ════════════════════════════════════════ -->
+  <div id="gen-modal" class="modal hidden" onclick="if(event.target===this)closeGenModal()">
+    <div class="modal-box max-w-[620px] max-h-[92vh] flex flex-col">
+
+      <!-- Header -->
+      <div class="px-6 pt-5 pb-4 border-b border-gray-100 flex items-center justify-between shrink-0">
+        <div>
+          <h2 class="font-bold text-gray-800 text-[16px]">✨ AI 커리큘럼 생성</h2>
+          <p class="text-[12px] text-gray-400 mt-0.5">입력 정보를 바탕으로 맞춤 커리큘럼을 자동으로 생성합니다</p>
+        </div>
+        <button onclick="closeGenModal()" class="text-gray-300 hover:text-gray-500 text-xl leading-none transition-colors">✕</button>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+
+        <!-- Row 1: 기관명 + 교육명 -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="f-label">🏢 기관명</label>
+            <input id="g-org" type="text" placeholder="예: 국민건강보험공단" class="f-input" maxlength="40">
+          </div>
+          <div>
+            <label class="f-label">📋 교육명</label>
+            <input id="g-name" type="text" placeholder="예: AX 인재육성 역량강화 교육" class="f-input" maxlength="60">
+          </div>
+        </div>
+
+        <!-- Row 2: 수준 + 시간 + 형태 + 수강생 수 -->
+        <div class="grid grid-cols-4 gap-3">
+          <div>
+            <label class="f-label">📊 수강생 수준</label>
+            <select id="g-level" class="f-input">
+              <option value="입문">입문</option>
+              <option value="초급" selected>초급</option>
+              <option value="중급">중급</option>
+              <option value="심화">심화</option>
+            </select>
+          </div>
+          <div>
+            <label class="f-label">⏱ 총 강의시간</label>
+            <div class="flex items-center gap-1">
+              <input id="g-hours" type="number" value="7" min="1" max="80" class="f-input text-center">
+              <span class="text-[12px] text-gray-400 shrink-0">H</span>
+            </div>
+          </div>
+          <div>
+            <label class="f-label">🎓 교육 형태</label>
+            <select id="g-method" class="f-input">
+              <option value="대면(오프라인)">대면(오프라인)</option>
+              <option value="비대면(온라인)">비대면(온라인)</option>
+              <option value="온·오프라인 병행">온·오프라인 병행</option>
+            </select>
+          </div>
+          <div>
+            <label class="f-label">👥 수강생 수</label>
+            <div class="flex items-center gap-1">
+              <input id="g-count" type="number" placeholder="30" min="1" max="500" class="f-input text-center">
+              <span class="text-[12px] text-gray-400 shrink-0">명</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: 교육 대상 -->
+        <div>
+          <label class="f-label">👤 교육 대상 <span class="text-gray-400 font-normal">(수강생의 직군, 업무 특성, IT 친숙도 등)</span></label>
+          <textarea id="g-target" rows="2" placeholder="예: 행정직 직원(200명), IT 비전문가 중심, 평균 연령 40대, 엑셀 기본 활용 수준" class="f-input resize-none"></textarea>
+        </div>
+
+        <!-- Row 4: 교육 목표 -->
+        <div>
+          <label class="f-label">🎯 교육 목표 <span class="text-gray-400 font-normal">(이 교육으로 수강생이 무엇을 할 수 있어야 하는가)</span></label>
+          <textarea id="g-goal" rows="2" placeholder="예: ChatGPT를 활용해 공문·보고서를 스스로 작성할 수 있다 / 반복 행정업무를 AI로 자동화하는 아이디어를 도출할 수 있다" class="f-input resize-none"></textarea>
+        </div>
+
+        <!-- Row 5: 기타 특이사항 -->
+        <div>
+          <label class="f-label">📝 기타 특이사항 <span class="text-gray-400 font-normal">(도메인 특성, 보안 이슈, 강조 요소 등)</span></label>
+          <textarea id="g-extra" rows="3" placeholder="예: 의료기관 특성상 환자 개인정보 보안 강조 필요 / 업무 자동화(Agent) 실습 비중 높여줄 것 / 실습 PC 환경에서 인터넷 제한 있음 / 기존 ChatGPT 입문 교육 1회 수료한 그룹" class="f-input resize-none"></textarea>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-dashed border-gray-100 pt-1"></div>
+
+        <!-- Level guide -->
+        <div class="bg-blue-50 rounded-xl p-4 text-[12px] text-blue-800">
+          <p class="font-semibold mb-2">💡 수준별 기본 구성 가이드</p>
+          <div class="grid grid-cols-2 gap-x-6 gap-y-1 text-blue-700">
+            <div><b>입문</b> — AI 개념·도구 체험·간단한 프롬프트 (3~4모듈)</div>
+            <div><b>초급</b> — 프롬프트 엔지니어링·업무 실무적용 (4~5모듈)</div>
+            <div><b>중급</b> — Agent/RAG·데이터 분석·AX 과제 기획 (6~8모듈)</div>
+            <div><b>심화</b> — 고급 워크플로우·봇 제작·자동화 구축 (3차시)</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer buttons -->
+      <div class="px-6 py-4 border-t border-gray-100 flex gap-3 shrink-0">
+        <button onclick="runGeneration()"
+          class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 shadow-sm">
+          ✨ 커리큘럼 생성하기
+        </button>
+        <button onclick="closeGenModal()"
+          class="px-5 bg-gray-100 hover:bg-gray-200 text-gray-600 py-2.5 rounded-xl text-[13px] transition-colors">
+          취소
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Loading Modal -->
+
+  <!-- ── API Key Modal ── -->
+  <div id="api-modal" class="modal hidden" onclick="if(event.target===this)closeApiModal()">
+    <div class="modal-box max-w-[400px] p-6">
+      <h3 class="font-semibold text-gray-800 text-[15px] mb-1">Claude API 키 설정</h3>
+      <p class="text-[12px] text-gray-400 mb-4">키는 이 브라우저(localStorage)에만 저장됩니다.</p>
+      <input id="api-key-input" type="password" placeholder="sk-ant-api03-..."
+        class="f-input mb-1 font-mono">
+      <p class="text-[11px] text-gray-400 mb-4">
+        <a href="https://console.anthropic.com" target="_blank" class="text-blue-500 underline">console.anthropic.com</a>에서 발급
+      </p>
+      <div class="flex gap-2">
+        <button onclick="saveApiKey()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium">저장</button>
+        <button onclick="closeApiModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 py-2 rounded-lg text-sm">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Loading Modal ── -->
   <div id="loading-modal" class="modal hidden">
     <div class="bg-white rounded-xl shadow-xl px-12 py-10 flex flex-col items-center gap-5">
       <div class="spinner"></div>
       <div class="text-center">
         <p class="font-semibold text-gray-700 text-[14px]">AI가 커리큘럼을 생성하고 있습니다</p>
-        <p class="text-[12px] text-gray-400 mt-1">교육 수준과 기관 특성을 분석 중...</p>
+        <p class="text-[12px] text-gray-400 mt-1" id="loading-msg">교육 대상과 목표를 분석 중...</p>
       </div>
     </div>
   </div>
 
+
   <script>
-  /* ──────────────────────────────────────────────
-     Data & Config
-  ────────────────────────────────────────────── */
+  /* ─────────────────────────────────────
+     Constants & State
+  ───────────────────────────────────── */
   const DATA_KEYS = ['구분','프로그램명','세부내용','실습내용','산출물','강의방법','활용AI도구','강의시간'];
   const METHOD_OPTIONS = ['이론','이론+실습','실습'];
-  const STORAGE_KEY = 'd1_curriculum_data';
+  const STORAGE_KEY = 'd1_curriculum_v2';
+  const META_KEY    = 'd1_curriculum_meta';
 
-  // Default sample data (고려대학교의료원 스타일)
   const DEFAULT_DATA = [
-    { 구분:'M1', 프로그램명:'생성형 AI 개념·활용', 세부내용:'생성형 AI 개념 및 트렌드\n생성형 AI 종류 및 작동 원리 이해\n주요 AI 도구 기능분석 및 체험', 실습내용:'AI 만들기\n주요 AI 도구 체험 실습', 산출물:'AI 활용 MAP', 강의방법:'이론+실습', 활용AI도구:'ChatGPT, Gemini, Claude', 강의시간:'2H' },
+    { 구분:'M1', 프로그램명:'생성형 AI 개념·활용', 세부내용:'생성형 AI 개념 및 트렌드\n생성형 AI 종류 및 작동 원리 이해\n주요 AI 도구 기능분석 및 체험', 실습내용:'주요 AI 도구 체험 실습\nAI 활용 MAP 만들기', 산출물:'AI 활용 MAP', 강의방법:'이론+실습', 활용AI도구:'ChatGPT, Gemini, Claude', 강의시간:'2H' },
     { 구분:'M2', 프로그램명:'프롬프트 엔지니어링 기초 및 실무적용', 세부내용:'프롬프트 구조(역할/조건/출력) 이해\n질문 방식에 따른 결과 차이 비교\n부서별 반복업무 AI 활용 프롬프트 설계', 실습내용:'사무국 자료분석 및 요약\n민원 대응 매뉴얼 제작', 산출물:'프롬프트 기초 설계서\n민원응대 프롬프트', 강의방법:'이론+실습', 활용AI도구:'ChatGPT, MS Office', 강의시간:'3H' },
-    { 구분:'M3', 프로그램명:'AI 윤리 및 보안수칙', 세부내용:'AI 활용 시 보안·개인정보·데이터활용 기준\n부서별 민감정보 AI 활용 시 보안수칙 및 활용가이드', 실습내용:'-', 산출물:'AI 보안 가이드라인', 강의방법:'이론', 활용AI도구:'ChatGPT', 강의시간:'1H' },
-    { 구분:'M4', 프로그램명:'AI 오류검증 및 활용전략', 세부내용:'생성형 AI 환각(Hallucination), 편향 이해\nAI 활용 시 안전하고 정확한 질문 방법\n업무정확성 검증 체크리스트 만들기', 실습내용:'AI 체크리스트 만들기', 산출물:'AI 체크리스트', 강의방법:'이론+실습', 활용AI도구:'ChatGPT', 강의시간:'1H' }
+    { 구분:'M3', 프로그램명:'AI 윤리 및 보안수칙', 세부내용:'AI 활용 시 보안·개인정보·데이터활용 기준\n부서별 민감정보 AI 활용 시 보안수칙', 실습내용:'-', 산출물:'AI 보안 가이드라인', 강의방법:'이론', 활용AI도구:'ChatGPT', 강의시간:'1H' },
+    { 구분:'M4', 프로그램명:'AI 오류검증 및 활용전략', 세부내용:'생성형 AI 환각(Hallucination), 편향 이해\nAI 결과물 검증 체계 확립\n업무정확성 검증 체크리스트 만들기', 실습내용:'AI 체크리스트 만들기', 산출물:'AI 체크리스트', 강의방법:'이론+실습', 활용AI도구:'ChatGPT', 강의시간:'1H' }
   ];
 
   let rows = loadData();
+  let lastMeta = loadMeta();
 
-  /* ──────────────────────────────────────────────
+  /* ─────────────────────────────────────
      Persistence
-  ────────────────────────────────────────────── */
+  ───────────────────────────────────── */
   function loadData() {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [...DEFAULT_DATA];
-    } catch { return [...DEFAULT_DATA]; }
+    try { const s = localStorage.getItem(STORAGE_KEY); return s ? JSON.parse(s) : [...DEFAULT_DATA]; }
+    catch { return [...DEFAULT_DATA]; }
   }
-
-  function saveData() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch {}
+  function loadMeta() {
+    try { const s = localStorage.getItem(META_KEY); return s ? JSON.parse(s) : {}; }
+    catch { return {}; }
   }
+  function saveData()  { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch {} }
+  function saveMeta(m) { try { localStorage.setItem(META_KEY, JSON.stringify(m)); lastMeta = m; } catch {} }
 
-  /* ──────────────────────────────────────────────
-     Sync DOM → rows[] before any re-render
-  ────────────────────────────────────────────── */
+  /* ─────────────────────────────────────
+     Sync DOM → rows[] before re-render
+  ───────────────────────────────────── */
   function syncDOM() {
     document.querySelectorAll('[data-row]').forEach(el => {
-      const i = +el.dataset.row;
-      const k = el.dataset.key;
+      const i = +el.dataset.row, k = el.dataset.key;
       if (!rows[i] || !k) return;
-      if (el.tagName === 'DIV') rows[i][k] = el.innerText.trim();
-      else rows[i][k] = el.value;
+      rows[i][k] = el.tagName === 'DIV' ? el.innerText.trim() : el.value;
     });
   }
 
-  /* ──────────────────────────────────────────────
+  /* ─────────────────────────────────────
      Render
-  ────────────────────────────────────────────── */
+  ───────────────────────────────────── */
   function render() {
     const tbody = document.getElementById('tbody');
     tbody.innerHTML = '';
-
     rows.forEach((row, i) => {
       const tr = document.createElement('tr');
       tr.dataset.row = i;
       tr.className = 'border-t border-gray-100';
 
       // Checkbox
-      const tdChk = document.createElement('td');
-      tdChk.className = 'px-3 py-1 text-center align-top';
+      const tdC = document.createElement('td');
+      tdC.className = 'px-3 py-1 text-center align-top';
       const chk = document.createElement('input');
-      chk.type = 'checkbox';
-      chk.className = 'row-chk w-3.5 h-3.5 rounded cursor-pointer';
-      chk.dataset.row = i;
-      chk.addEventListener('change', e => {
-        e.target.closest('tr').classList.toggle('selected', e.target.checked);
-        updateSelectAll();
-      });
-      tdChk.appendChild(chk);
-      tr.appendChild(tdChk);
+      chk.type = 'checkbox'; chk.className = 'row-chk w-3.5 h-3.5 rounded cursor-pointer'; chk.dataset.row = i;
+      chk.addEventListener('change', e => { e.target.closest('tr').classList.toggle('selected', e.target.checked); updateSelectAll(); });
+      tdC.appendChild(chk); tr.appendChild(tdC);
 
-      // Data cells
       DATA_KEYS.forEach(key => {
         const td = document.createElement('td');
         td.className = 'px-1 py-0.5 align-top';
 
         if (key === '강의방법') {
           const sel = document.createElement('select');
-          sel.className = 'sel-input';
-          sel.dataset.row = i;
-          sel.dataset.key = key;
-          METHOD_OPTIONS.forEach(opt => {
-            const o = document.createElement('option');
-            o.value = opt; o.textContent = opt;
-            if (opt === row[key]) o.selected = true;
-            sel.appendChild(o);
-          });
+          sel.className = 'sel-input'; sel.dataset.row = i; sel.dataset.key = key;
+          METHOD_OPTIONS.forEach(o => { const op = document.createElement('option'); op.value = op.textContent = o; if (o === row[key]) op.selected = true; sel.appendChild(op); });
           sel.addEventListener('change', e => { rows[i][key] = e.target.value; saveData(); });
           td.appendChild(sel);
         } else if (key === '강의시간') {
           const inp = document.createElement('input');
-          inp.type = 'text';
-          inp.className = 'txt-input';
-          inp.value = row[key] || '';
-          inp.placeholder = '1H';
-          inp.dataset.row = i;
-          inp.dataset.key = key;
+          inp.type = 'text'; inp.className = 'txt-input'; inp.value = row[key] || ''; inp.placeholder = '1H';
+          inp.dataset.row = i; inp.dataset.key = key;
           inp.addEventListener('input', e => { rows[i][key] = e.target.value; });
-          inp.addEventListener('blur', () => saveData());
+          inp.addEventListener('blur', () => { updateCount(); saveData(); });
           td.appendChild(inp);
         } else {
           const div = document.createElement('div');
-          div.contentEditable = 'true';
-          div.className = 'cell-edit';
-          div.dataset.row = i;
-          div.dataset.key = key;
+          div.contentEditable = 'true'; div.className = 'cell-edit';
+          div.dataset.row = i; div.dataset.key = key;
           div.innerText = row[key] || '';
           div.addEventListener('blur', e => { rows[i][key] = e.target.innerText.trim(); saveData(); });
           td.appendChild(div);
         }
-
         tr.appendChild(td);
       });
-
       tbody.appendChild(tr);
     });
-
     updateCount();
+    renderInfoBar();
   }
 
   function updateCount() {
-    const h = rows.reduce((acc, r) => acc + parseFloat(r.강의시간 || 0), 0);
-    document.getElementById('row-count').textContent =
-      `${rows.length}개 모듈 · 총 ${isNaN(h) ? '-' : h}H`;
+    let total = 0;
+    rows.forEach(r => { const n = parseFloat((r.강의시간||'').replace(/[^0-9.]/g,'')); if (!isNaN(n)) total += n; });
+    document.getElementById('row-count').textContent = `${rows.length}개 모듈 · 총 ${total}H`;
   }
 
-  /* ──────────────────────────────────────────────
+  function renderInfoBar() {
+    const m = lastMeta;
+    const setChip = (id, text, show) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text || '';
+      el.classList.toggle('hidden', !show);
+    };
+    const hasAny = m.org || m.name || m.level;
+    setChip('chip-org',   m.org,    !!m.org);
+    setChip('chip-name',  m.name,   !!m.name);
+    setChip('chip-level', m.level,  !!m.level);
+    setChip('chip-hours', m.hours ? m.hours+'H' : '', !!m.hours);
+    setChip('chip-method', m.method, !!m.method);
+    const ph = document.getElementById('chip-placeholder');
+    if (ph) ph.classList.toggle('hidden', hasAny);
+  }
+
+  /* ─────────────────────────────────────
      Row Operations
-  ────────────────────────────────────────────── */
+  ───────────────────────────────────── */
   function addRow() {
     syncDOM();
     rows.push({ 구분:`M${rows.length+1}`, 프로그램명:'', 세부내용:'', 실습내용:'', 산출물:'', 강의방법:'이론+실습', 활용AI도구:'ChatGPT', 강의시간:'1H' });
-    render();
-    // Focus new row's 프로그램명
+    render(); saveData();
     const edits = document.querySelectorAll('.cell-edit');
-    if (edits.length >= 2) edits[edits.length - 7].focus();
-    saveData();
+    if (edits.length >= 7) edits[edits.length - 7].focus();
   }
 
   function deleteSelected() {
@@ -354,90 +437,115 @@
     const del = new Set(Array.from(document.querySelectorAll('.row-chk:checked')).map(c => +c.dataset.row));
     if (!del.size) { showToast('삭제할 행을 선택하세요.', 'warn'); return; }
     rows = rows.filter((_, i) => !del.has(i));
-    render();
-    saveData();
-    showToast(`${del.size}개 행이 삭제되었습니다.`);
+    render(); saveData();
+    showToast(`${del.size}개 행 삭제됨`);
   }
 
   function toggleAll(chk) {
-    document.querySelectorAll('.row-chk').forEach(c => {
-      c.checked = chk.checked;
-      c.closest('tr').classList.toggle('selected', chk.checked);
-    });
+    document.querySelectorAll('.row-chk').forEach(c => { c.checked = chk.checked; c.closest('tr').classList.toggle('selected', chk.checked); });
   }
-
   function updateSelectAll() {
-    const all = document.querySelectorAll('.row-chk');
-    const checked = document.querySelectorAll('.row-chk:checked');
-    document.getElementById('chk-all').checked = all.length && all.length === checked.length;
-    document.getElementById('chk-all').indeterminate = checked.length > 0 && checked.length < all.length;
+    const all = document.querySelectorAll('.row-chk'), chk = document.querySelectorAll('.row-chk:checked');
+    const el = document.getElementById('chk-all');
+    el.checked = all.length && all.length === chk.length;
+    el.indeterminate = chk.length > 0 && chk.length < all.length;
   }
 
-  /* ──────────────────────────────────────────────
+  /* ─────────────────────────────────────
+     Generation Modal
+  ───────────────────────────────────── */
+  function openGenModal() {
+    // Pre-fill from lastMeta
+    const m = lastMeta;
+    if (m.org)    document.getElementById('g-org').value    = m.org;
+    if (m.name)   document.getElementById('g-name').value   = m.name;
+    if (m.level)  document.getElementById('g-level').value  = m.level;
+    if (m.hours)  document.getElementById('g-hours').value  = m.hours;
+    if (m.method) document.getElementById('g-method').value = m.method;
+    if (m.count)  document.getElementById('g-count').value  = m.count;
+    if (m.target) document.getElementById('g-target').value = m.target;
+    if (m.goal)   document.getElementById('g-goal').value   = m.goal;
+    if (m.extra)  document.getElementById('g-extra').value  = m.extra;
+    document.getElementById('gen-modal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('g-org').focus(), 100);
+  }
+  function closeGenModal() { document.getElementById('gen-modal').classList.add('hidden'); }
+
+  /* ─────────────────────────────────────
      API Key Modal
-  ────────────────────────────────────────────── */
-  function openApiModal() {
-    document.getElementById('api-key-input').value = localStorage.getItem('d1_claude_key') || '';
-    document.getElementById('api-modal').classList.remove('hidden');
-  }
-  function closeApiModal() {
-    document.getElementById('api-modal').classList.add('hidden');
-  }
-  function saveApiKey() {
-    const k = document.getElementById('api-key-input').value.trim();
-    if (k) { localStorage.setItem('d1_claude_key', k); showToast('API 키가 저장되었습니다.'); }
-    closeApiModal();
-  }
+  ───────────────────────────────────── */
+  function openApiModal()  { document.getElementById('api-key-input').value = localStorage.getItem('d1_claude_key')||''; document.getElementById('api-modal').classList.remove('hidden'); }
+  function closeApiModal() { document.getElementById('api-modal').classList.add('hidden'); }
+  function saveApiKey()    { const k = document.getElementById('api-key-input').value.trim(); if (k) { localStorage.setItem('d1_claude_key', k); showToast('API 키가 저장되었습니다.'); } closeApiModal(); }
 
-  /* ──────────────────────────────────────────────
+  /* ─────────────────────────────────────
      AI Generation
-  ────────────────────────────────────────────── */
-  async function generateWithAI() {
+  ───────────────────────────────────── */
+  async function runGeneration() {
     const apiKey = localStorage.getItem('d1_claude_key');
-    if (!apiKey) { openApiModal(); return; }
+    if (!apiKey) { closeGenModal(); openApiModal(); return; }
 
-    const org   = document.getElementById('edu-org').value   || '공공기관';
-    const name  = document.getElementById('edu-name').value  || 'AI 활용역량 강화 교육';
-    const level = document.getElementById('edu-level').value;
-    const hours = document.getElementById('edu-hours').value || 7;
-    const method = document.getElementById('edu-method').value;
+    const meta = {
+      org:    document.getElementById('g-org').value.trim()    || '공공기관',
+      name:   document.getElementById('g-name').value.trim()   || 'AI 활용역량 강화 교육',
+      level:  document.getElementById('g-level').value,
+      hours:  document.getElementById('g-hours').value         || '7',
+      method: document.getElementById('g-method').value,
+      count:  document.getElementById('g-count').value,
+      target: document.getElementById('g-target').value.trim(),
+      goal:   document.getElementById('g-goal').value.trim(),
+      extra:  document.getElementById('g-extra').value.trim(),
+    };
+
+    closeGenModal();
+    document.getElementById('loading-modal').classList.remove('hidden');
+    setLoadingMsg('교육 대상과 목표를 분석 중...');
+    setTimeout(() => setLoadingMsg('수준별 커리큘럼 구조 설계 중...'), 1800);
+    setTimeout(() => setLoadingMsg('세부 모듈 내용 작성 중...'), 3600);
 
     const levelGuide = {
-      입문: '① AI 기초 개념 이해 ② 주요 도구 체험 ③ 간단한 프롬프트 작성 ④ AI 윤리/보안 — 총 3~4개 모듈',
-      초급: '① 생성형AI 개념+도구 ② 프롬프트 엔지니어링 기초 ③ 실무 문서 활용 ④ AI 윤리/보안 ⑤ 오류 검증 — 총 4~5개 모듈',
-      중급: '① AI 원리/LLM ② 프롬프트 기초·심화 ③ RAG 개념 및 실습 ④ Agent 만들기 ⑤ 데이터 분석/시각화 ⑥ AX 과제 기획·발표 — 총 6~8개 모듈, 총2일',
-      심화: '차시별 구성: 1차시-AI 도구 비교/NotebookLM 심화 2차시-업무 자동화 워크플로우 3차시-프롬프트 완성 문서분석+봇제작+성과공유 — 총 3차시, 차시당 2H',
+      입문: '3~4개 모듈: ① AI 기초 개념 이해 ② 주요 도구 체험 ③ 간단한 프롬프트 작성 ④ AI 윤리/보안',
+      초급: '4~5개 모듈: ① 생성형AI 개념+도구 ② 프롬프트 엔지니어링 기초 ③ 실무 문서 활용 ④ AI 윤리/보안 ⑤ 오류 검증',
+      중급: '6~8개 모듈(2일): ① AI 원리/LLM ② 프롬프트 기초·심화 ③ RAG 개념 실습 ④ Agent 만들기 ⑤ 데이터 분석/시각화 ⑥ AX 과제 기획·발표',
+      심화: '3차시: 1차시-AI 도구 비교/NotebookLM 심화 2차시-업무자동화 워크플로우 3차시-봇 제작+성과공유',
     };
 
     const prompt = `당신은 AI 활용역량 강화 교육 커리큘럼 전문 설계자입니다.
-아래 조건에 맞는 교육 커리큘럼을 JSON으로 생성해주세요.
+아래 조건을 꼼꼼히 반영하여 최적의 교육 커리큘럼을 JSON으로 생성하세요.
 
-■ 교육명: ${name}
-■ 대상기관: ${org}
-■ 교육수준: ${level}
-■ 총강의시간: ${hours}H
-■ 교육방법: ${method}
-■ 수강대상: 공공기관 직원 (비개발자, IT 비전문가 중심)
-■ 주제: AI 활용역량 강화
+══ 기본 정보 ══
+교육명: ${meta.name}
+기관명: ${meta.org}
+교육 형태: ${meta.method}
+교육수준: ${meta.level}
+총 강의시간: ${meta.hours}H${meta.count ? `\n수강생 수: ${meta.count}명` : ''}
 
-■ 수준 가이드:
-${levelGuide[level]}
+══ 교육 대상 ══
+${meta.target || '공공기관 직원(비개발자, IT 비전문가 중심)'}
 
-■ 컬럼 작성 기준:
-- 구분: M1, M2 등 (심화는 1차시, 2차시 등 사용)
+══ 교육 목표 ══
+${meta.goal || 'AI 도구를 업무에 실질적으로 활용할 수 있는 역량 확보'}
+
+══ 기타 특이사항 ══
+${meta.extra || '없음'}
+
+══ 수준 가이드 ══
+${levelGuide[meta.level]}
+
+══ 컬럼 작성 기준 ══
+- 구분: M1, M2 등 (심화는 1차시, 2차시 등)
 - 프로그램명: 모듈 핵심 주제 (20자 이내)
-- 세부내용: 강의 세부 항목들을 줄바꿈(\\n)으로 구분하여 3~5개 기술
+- 세부내용: 강의 세부 항목 3~5개, 줄바꿈(\\n)으로 구분
 - 실습내용: 수강생이 직접 수행하는 실습 (없으면 "-")
-- 산출물: 실습 완료 후 만들어지는 결과물 (없으면 "-")
-- 강의방법: 반드시 "이론", "이론+실습", "실습" 중 하나만
-- 활용AI도구: 실제 사용 도구 (ChatGPT, Gemini, Claude, NotebookLM, Copilot, DALL-E, MS Office, Google Sheets 중 적절히)
-- 강의시간: 강의시간 합계가 정확히 ${hours}H가 되도록 배분 (예: "1H", "2H", "1.5H")
+- 산출물: 실습 완료 후 결과물 (없으면 "-")
+- 강의방법: "이론", "이론+실습", "실습" 중 하나만
+- 활용AI도구: 실제 사용 도구 (ChatGPT, Gemini, Claude, NotebookLM, Copilot, DALL-E, MS Office, Google Sheets, Canva 등)
+- 강의시간: 모든 모듈 시간의 합이 반드시 ${meta.hours}H. 형식: "1H", "2H", "1.5H"
 
-■ 출력: JSON만 출력. 다른 설명이나 마크다운 없이.
+⚠ 교육 대상·목표·특이사항을 최대한 반영하여 기관 맞춤형으로 설계할 것.
+⚠ JSON만 출력. 마크다운·설명 없이.
+
 {"modules":[{"구분":"M1","프로그램명":"...","세부내용":"항목1\\n항목2\\n항목3","실습내용":"...","산출물":"...","강의방법":"이론+실습","활용AI도구":"ChatGPT","강의시간":"2H"},...]}`
-
-    document.getElementById('loading-modal').classList.remove('hidden');
-    document.getElementById('gen-btn').disabled = true;
 
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -457,32 +565,26 @@ ${levelGuide[level]}
 
       if (!res.ok) {
         const e = await res.json().catch(() => ({}));
-        throw new Error(e.error?.message || `HTTP 오류 ${res.status}`);
+        throw new Error(e.error?.message || `HTTP ${res.status}`);
       }
 
       const data = await res.json();
       const text = data.content?.[0]?.text || '';
-
       const match = text.match(/\{[\s\S]*\}/);
       if (!match) throw new Error('응답에서 JSON을 찾을 수 없습니다.');
 
       const parsed = JSON.parse(match[0]);
       if (!Array.isArray(parsed.modules) || !parsed.modules.length)
-        throw new Error('커리큘럼 모듈 데이터가 비어 있습니다.');
+        throw new Error('모듈 데이터가 비어 있습니다.');
 
       rows = parsed.modules.map(m => ({
-        구분:    m.구분     || '',
-        프로그램명: m.프로그램명 || '',
-        세부내용: m.세부내용 || '',
-        실습내용: m.실습내용 || '',
-        산출물:  m.산출물   || '',
+        구분: m.구분||'', 프로그램명: m.프로그램명||'', 세부내용: m.세부내용||'',
+        실습내용: m.실습내용||'', 산출물: m.산출물||'',
         강의방법: METHOD_OPTIONS.includes(m.강의방법) ? m.강의방법 : '이론+실습',
-        활용AI도구: m.활용AI도구 || 'ChatGPT',
-        강의시간: m.강의시간 || '1H'
+        활용AI도구: m.활용AI도구||'ChatGPT', 강의시간: m.강의시간||'1H'
       }));
 
-      render();
-      saveData();
+      saveMeta(meta); saveData(); render();
       showToast(`✅ ${rows.length}개 모듈 커리큘럼 생성 완료!`);
 
     } catch (err) {
@@ -490,74 +592,74 @@ ${levelGuide[level]}
       showToast('오류: ' + err.message, 'error');
     } finally {
       document.getElementById('loading-modal').classList.add('hidden');
-      document.getElementById('gen-btn').disabled = false;
     }
   }
 
-  /* ──────────────────────────────────────────────
-     CSV Export (BOM for Excel Korean)
-  ────────────────────────────────────────────── */
+  function setLoadingMsg(msg) {
+    const el = document.getElementById('loading-msg');
+    if (el) el.textContent = msg;
+  }
+
+  /* ─────────────────────────────────────
+     CSV Export
+  ───────────────────────────────────── */
   function exportCSV() {
     syncDOM();
-    const org   = document.getElementById('edu-org').value   || '';
-    const name  = document.getElementById('edu-name').value  || '교육';
-    const level = document.getElementById('edu-level').value;
-    const hours = document.getElementById('edu-hours').value;
-    const method = document.getElementById('edu-method').value;
-
-    const esc = v => `"${String(v || '').replace(/"/g, '""')}"`;
-
+    const m = lastMeta;
+    const esc = v => `"${String(v||'').replace(/"/g,'""')}"`;
     const csvRows = [
-      [`교육명: ${name}`, `대상기관: ${org}`, `수준: ${level}`, `총시간: ${hours}H`, `교육방법: ${method}`],
+      [`교육명: ${m.name||''}`,`기관명: ${m.org||''}`,`수준: ${m.level||''}`,`총시간: ${m.hours||''}H`,`형태: ${m.method||''}`],
+      m.target ? [`교육대상: ${m.target}`] : [],
+      m.goal   ? [`교육목표: ${m.goal}`]   : [],
       [],
       ['구분','프로그램명','세부내용(커리큘럼)','실습내용','산출물','강의방법','활용AI도구','강의시간'],
       ...rows.map(r => [
         r.구분, r.프로그램명,
-        (r.세부내용 || '').replace(/\n/g,' | '),
-        (r.실습내용 || '').replace(/\n/g,' | '),
-        (r.산출물   || '').replace(/\n/g,' | '),
+        (r.세부내용||'').replace(/\n/g,' | '),
+        (r.실습내용||'').replace(/\n/g,' | '),
+        (r.산출물||'').replace(/\n/g,' | '),
         r.강의방법, r.활용AI도구, r.강의시간
       ])
-    ];
+    ].filter(r => r.length);
 
-    const csv = csvRows.map(row => row.map(esc).join(',')).join('\n');
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+    const csv = csvRows.map(r => r.map(esc).join(',')).join('\n');
     const a = document.createElement('a');
-    const date = new Date().toLocaleDateString('ko-KR').replace(/\. /g,'-').replace('.','');
-    a.href = URL.createObjectURL(blob);
-    a.download = `커리큘럼_${org||'기관'}_${level}_${date}.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    showToast('엑셀 파일이 다운로드되었습니다.');
+    const date = new Date().toLocaleDateString('ko-KR').replace(/\.\s?/g,'-').replace(/-$/,'');
+    a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'}));
+    a.download = `커리큘럼_${m.org||'기관'}_${m.level||''}_${date}.csv`;
+    a.click(); URL.revokeObjectURL(a.href);
+    showToast('엑셀 파일 다운로드 완료');
   }
 
-  /* ──────────────────────────────────────────────
+  /* ─────────────────────────────────────
      Toast
-  ────────────────────────────────────────────── */
-  function showToast(msg, type = 'success') {
-    const colors = { success:'bg-gray-800', error:'bg-red-500', warn:'bg-amber-500' };
+  ───────────────────────────────────── */
+  function showToast(msg, type='success') {
+    const c = {success:'bg-gray-800', error:'bg-red-500', warn:'bg-amber-500'};
     const t = document.createElement('div');
-    t.className = `toast ${colors[type] || colors.success}`;
-    t.textContent = msg;
+    t.className = `toast ${c[type]||c.success}`; t.textContent = msg;
     document.body.appendChild(t);
-    setTimeout(() => {
-      t.style.transition = 'opacity .3s';
-      t.style.opacity = '0';
-      setTimeout(() => t.remove(), 300);
-    }, 2800);
+    setTimeout(() => { t.style.transition='opacity .3s'; t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 2800);
   }
 
-  /* ──────────────────────────────────────────────
-     Keyboard shortcuts
-  ────────────────────────────────────────────── */
+  /* ─────────────────────────────────────
+     Keyboard
+  ───────────────────────────────────── */
   document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { addRow(); e.preventDefault(); }
+    if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { addRow(); e.preventDefault(); }
+    if (e.key==='Escape') { closeGenModal(); closeApiModal(); }
   });
 
-  /* ──────────────────────────────────────────────
+  // Gen modal: Enter on last textarea triggers generation
+  document.getElementById('g-extra')?.addEventListener('keydown', e => {
+    if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); runGeneration(); }
+  });
+
+  /* ─────────────────────────────────────
      Init
-  ────────────────────────────────────────────── */
+  ───────────────────────────────────── */
   render();
+  if (!lastMeta || !lastMeta.org) document.getElementById('chip-placeholder')?.classList.remove('hidden');
   </script>
 </body>
 </html>
