@@ -158,12 +158,16 @@
     </div>
 
     <!-- Generate -->
-    <div class="pt-1">
-      <button onclick="handleGenerate()"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-semibold text-[15px] transition-colors flex items-center justify-center gap-2 shadow-sm">
-        ✨ AI 커리큘럼 생성하기
+    <div class="pt-1 space-y-2">
+      <button onclick="handleTemplateGen()"
+        class="w-full bg-gray-800 hover:bg-gray-900 text-white py-3.5 rounded-xl font-semibold text-[15px] transition-colors flex items-center justify-center gap-2 shadow-sm">
+        📋 템플릿으로 생성 <span class="text-gray-400 text-[12px] font-normal ml-1">API 키 불필요</span>
       </button>
-      <p class="text-center text-[11.5px] text-gray-400 mt-2">실제 제안서 데이터 기반 · Claude AI · 직접 수정 가능 · 자동 저장</p>
+      <button onclick="handleGenerate()"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-medium text-[14px] transition-colors flex items-center justify-center gap-2 shadow-sm">
+        ✨ AI로 더 정교하게 생성 <span class="text-blue-200 text-[12px] font-normal ml-1">Claude API 필요</span>
+      </button>
+      <p class="text-center text-[11.5px] text-gray-400">제안서 데이터 기반 · 직접 수정 가능 · 자동 저장</p>
     </div>
 
   </div>
@@ -278,6 +282,105 @@
 </div>
 
 <script>
+/* ─── Template Pool (제안서 기반) ─── */
+const TEMPLATE_POOL = {
+  입문:[
+    {구분:'M1',프로그램명:'생성형 AI 개념과 트렌드',세부내용:'생성형 AI 개념 및 최신 트렌드\nChatGPT·Gemini·Claude 도구 비교\nAI가 바꾸는 공공 업무 환경',실습내용:'주요 AI 도구 직접 체험\nAI 활용 MAP 작성',산출물:'AI 활용 MAP',강의방법:'이론+실습',활용AI도구:'ChatGPT, Gemini, Claude',w:1.5},
+    {구분:'M2',프로그램명:'AI 도구 기초 체험',세부내용:'ChatGPT 기본 사용법\n이미지·문서·요약 생성 실습\nAI 도구별 활용 시나리오',실습내용:'공문 초안 AI 작성 체험\nAI 이미지 생성 실습',산출물:'공문 초안',강의방법:'실습',활용AI도구:'ChatGPT, DALL-E',w:2},
+    {구분:'M3',프로그램명:'프롬프트 기초 작성법',세부내용:'프롬프트 구조(역할·조건·출력형식)\n좋은 프롬프트 vs 나쁜 프롬프트 비교\n행정 업무별 프롬프트 작성 실습',실습내용:'나의 업무용 프롬프트 5개 작성\n결과물 비교·개선',산출물:'업무별 프롬프트 모음집',강의방법:'이론+실습',활용AI도구:'ChatGPT',w:2},
+    {구분:'M4',프로그램명:'AI 윤리와 보안수칙',세부내용:'AI 환각(Hallucination) 이해\n개인정보·보안 수칙\nAI 결과물 검증 체크리스트',실습내용:'-',산출물:'AI 보안 체크리스트',강의방법:'이론',활용AI도구:'ChatGPT',w:1},
+  ],
+  초급:[
+    {구분:'M1',프로그램명:'생성형 AI 개념·도구',세부내용:'생성형 AI 개념 및 LLM 원리 이해\n주요 AI 도구 기능 비교\n공공기관 업무별 AI 활용 사례',실습내용:'AI 도구 체험 실습\nAI 활용 MAP 작성',산출물:'AI 활용 MAP',강의방법:'이론+실습',활용AI도구:'ChatGPT, Gemini, Claude',w:1.5},
+    {구분:'M2',프로그램명:'프롬프트 엔지니어링',세부내용:'프롬프트 구조 심화(페르소나·조건·형식)\nZero-shot / Few-shot 기법\n반복업무용 프롬프트 패턴 설계',실습내용:'부서별 반복업무 프롬프트 작성\n프롬프트 템플릿 제작',산출물:'프롬프트 템플릿 모음',강의방법:'이론+실습',활용AI도구:'ChatGPT, Claude',w:2},
+    {구분:'M3',프로그램명:'실무 문서 AI 활용',세부내용:'보고서·공문·회의록 AI 작성법\n요약·번역·편집 실무 활용\n민원 대응 문서 자동화',실습내용:'AI로 보고서 작성\n회의록 자동 요약 실습',산출물:'AI 작성 보고서\n회의록 요약본',강의방법:'이론+실습',활용AI도구:'ChatGPT, MS Office Copilot',w:2},
+    {구분:'M4',프로그램명:'AI 윤리·보안·오류검증',세부내용:'AI 환각·편향 이해 및 검증 방법\n개인정보·보안 수칙\n결과물 팩트체크 체계 수립',실습내용:'AI 결과물 검증 실습\n오류 체크리스트 작성',산출물:'AI 보안 가이드\n오류검증 체크리스트',강의방법:'이론+실습',활용AI도구:'ChatGPT',w:1.5},
+  ],
+  중급:[
+    {구분:'M1',프로그램명:'AI 원리·LLM 이해',세부내용:'LLM 작동 원리(토큰·임베딩)\n파인튜닝·RAG 개념 이해\n최신 AI 트렌드(멀티모달·에이전트)',실습내용:'AI 모델별 특성 비교 분석',산출물:'AI 기술 동향 보고서',강의방법:'이론+실습',활용AI도구:'ChatGPT, Claude, Gemini',w:1},
+    {구분:'M2',프로그램명:'프롬프트 심화 설계',세부내용:'고급 프롬프트 패턴(Chain-of-Thought)\n시스템 프롬프트 설계\n업무 자동화를 위한 프롬프트 체인',실습내용:'복잡한 업무용 프롬프트 체인 설계\n결과 품질 비교 분석',산출물:'고급 프롬프트 설계서',강의방법:'이론+실습',활용AI도구:'ChatGPT, Claude',w:1.5},
+    {구분:'M3',프로그램명:'RAG 개념과 실습',세부내용:'RAG(검색증강생성) 개념 이해\nNotebookLM 고급 활용\n기관 내부 문서 기반 AI 질의응답',실습내용:'NotebookLM으로 기관 문서 분석\nRAG 기반 챗봇 체험',산출물:'기관 문서 AI 분석본',강의방법:'이론+실습',활용AI도구:'NotebookLM, ChatGPT',w:1.5},
+    {구분:'M4',프로그램명:'AI Agent 만들기',세부내용:'AI 에이전트 개념 및 구조\nGPTs 커스텀 봇 설계 원리\n반복 업무 자동화 워크플로우',실습내용:'GPTs로 부서별 봇 직접 제작\n업무 자동화 시나리오 구현',산출물:'맞춤형 AI 봇',강의방법:'실습',활용AI도구:'ChatGPT GPTs, Make',w:2},
+    {구분:'M5',프로그램명:'데이터 분석·시각화',세부내용:'ChatGPT로 엑셀 데이터 분석\n차트·그래프 자동 생성\n인사이트 도출 및 보고서화',실습내용:'실무 데이터 AI 분석\n차트·인사이트 보고서 작성',산출물:'데이터 분석 보고서',강의방법:'이론+실습',활용AI도구:'ChatGPT, Google Sheets',w:1.5},
+    {구분:'M6',프로그램명:'AX 과제 기획·발표',세부내용:'AI 전환(AX) 과제 발굴 방법론\n부서별 AI 적용 기회 분석\n기관 맞춤 AX 로드맵 설계',실습내용:'팀별 AX 과제 기획\n발표 및 상호 피드백',산출물:'AX 과제 기획서',강의방법:'이론+실습',활용AI도구:'ChatGPT, Canva',w:1.5},
+  ],
+  심화:[
+    {구분:'1차시',프로그램명:'AI 도구 심화·비교분석',세부내용:'최신 AI 도구 심층 비교 분석\nNotebookLM 고급 활용법\nAI 도구 선택 전략 수립',실습내용:'AI 도구 벤치마킹 실습\nNotebookLM 심화 활용',산출물:'AI 도구 선택 가이드',강의방법:'이론+실습',활용AI도구:'NotebookLM, ChatGPT, Claude',w:2.5},
+    {구분:'2차시',프로그램명:'업무 자동화 워크플로우',세부내용:'AI 자동화 워크플로우 설계 원리\nMake 연동 실습\n반복 업무 완전 자동화 구현',실습내용:'AI 자동화 파이프라인 구축\n실제 업무 자동화 시나리오 구현',산출물:'업무 자동화 워크플로우',강의방법:'실습',활용AI도구:'Make, ChatGPT API, Google Sheets',w:3},
+    {구분:'3차시',프로그램명:'AI 봇 제작·성과 공유',세부내용:'맞춤형 AI 봇 고도화\n성과 측정 지표 설계\n조직 내 AI 확산 전략 수립',실습내용:'AI 봇 최종 완성·발표\n팀별 성과 공유',산출물:'완성형 AI 봇\n성과 보고서',강의방법:'실습',활용AI도구:'ChatGPT GPTs, Make, Canva',w:3},
+  ],
+};
+
+function handleTemplateGen(){
+  const org=document.getElementById('f-org').value.trim();
+  if(!org){showToast('고객사명을 입력해주세요.','warn');return;}
+  const meta={
+    org,
+    purpose:document.getElementById('f-purpose').value.trim(),
+    target:document.getElementById('f-target').value.trim(),
+    method:document.querySelector('input[name="f-method"]:checked')?.value||'대면(오프라인)',
+    level:document.querySelector('input[name="f-level"]:checked')?.value||'초급',
+    hours:document.getElementById('f-hours').value||'7',
+    extras:getChecked(),
+    extraCustom:document.getElementById('f-extra-custom').value.trim(),
+  };
+  const newRows=generateFromTemplate(meta);
+  const id=genId();
+  const entry={id,createdAt:new Date().toISOString(),meta,rows:newRows};
+  curricula.unshift(entry);persist();updateBadge();
+  openEditor(id);
+  showToast(`📋 ${newRows.length}개 모듈 템플릿 생성 완료!`);
+}
+
+function generateFromTemplate(meta){
+  const level=meta.level;
+  const totalH=parseFloat(meta.hours)||7;
+  const extras=meta.extras||[];
+  let mods=TEMPLATE_POOL[level].map(m=>({...m}));
+  const nextIdx=()=>level==='심화'?`${mods.length+1}차시`:`M${mods.length+1}`;
+
+  // Inject extra modules
+  if(extras.includes('automation')&&level!=='심화'){
+    mods.push({구분:nextIdx(),프로그램명:'업무 자동화 AI 실습',세부내용:'AI 자동화 개념 및 국내 활용 사례\n반복 업무 자동화 시나리오 설계\nAI 워크플로우 직접 구현',실습내용:'나의 반복 업무 자동화 설계\n자동화 결과 시연',산출물:'업무 자동화 시나리오서',강의방법:'실습',활용AI도구:'ChatGPT, Make',w:1.5});
+  }
+  if(extras.includes('data')&&!['중급','심화'].includes(level)){
+    mods.push({구분:nextIdx(),프로그램명:'AI 데이터 분석 입문',세부내용:'ChatGPT로 엑셀 데이터 분석\n시각화 차트 자동 생성\n주요 인사이트 도출',실습내용:'실무 데이터 AI 분석 실습\n차트 보고서 작성',산출물:'데이터 분석 보고서',강의방법:'이론+실습',활용AI도구:'ChatGPT, Google Sheets',w:1.5});
+  }
+  if(extras.includes('workshop')){
+    mods.push({구분:nextIdx(),프로그램명:'팀 발표·성과 공유',세부내용:'팀별 AI 활용 과제 발표\n동료 피드백 및 Q&A\n향후 AI 활용 계획 수립',실습내용:'팀별 발표 (5분/팀)\n질의응답 및 피드백',산출물:'발표 자료\n향후 활용 계획서',강의방법:'실습',활용AI도구:'ChatGPT, Canva',w:1});
+  }
+
+  // Apply extra modifiers
+  mods=mods.map(m=>{
+    const mod={...m};
+    if(extras.includes('security')&&(m.세부내용.includes('윤리')||m.세부내용.includes('보안'))){
+      mod.세부내용+='\n기관 내 개인정보 처리 규정 강화 교육';
+    }
+    if(extras.includes('free')){
+      mod.활용AI도구=mod.활용AI도구.replace('MS Office Copilot','ChatGPT 무료버전').replace('Make','Google Sheets').replace('Copilot','ChatGPT');
+    }
+    if(extras.includes('group')&&mod.실습내용&&mod.실습내용!=='-'){
+      mod.실습내용='[팀 실습] '+mod.실습내용;
+    }
+    return mod;
+  });
+
+  // Distribute hours proportionally
+  const totalW=mods.reduce((s,m)=>s+(m.w||1),0);
+  let usedH=0;
+  return mods.map((m,i)=>{
+    const mod={...m};delete mod.w;
+    if(i===mods.length-1){
+      mod.강의시간=fmtH(Math.max(0.5,Math.round((totalH-usedH)*2)/2));
+    } else {
+      const h=Math.max(0.5,Math.round(((m.w||1)/totalW*totalH)*2)/2);
+      mod.강의시간=fmtH(h);usedH+=h;
+    }
+    return mod;
+  });
+}
+function fmtH(h){return (h===Math.floor(h)?h:h)+'H';}
+
 /* ─── Constants ─── */
 const DATA_KEYS = ['구분','프로그램명','세부내용','실습내용','산출물','강의방법','활용AI도구','강의시간'];
 const METHOD_OPTS = ['이론','이론+실습','실습'];
